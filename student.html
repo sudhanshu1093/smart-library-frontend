@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f4f6fb;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .books {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .book-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .book-card h4 {
+      margin-bottom: 10px;
+    }
+
+    .book-card button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .dues {
+      margin-top: 30px;
+      background: #fff3cd;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h2>📚 Student Dashboard</h2>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
+  </div>
+
+  <div class="books" id="bookList"></div>
+
+  <div class="dues">
+    Total Dues: ₹ <span id="duesAmount">0</span>
+  </div>
+
+</div>
+
+<script>
+let books = JSON.parse(localStorage.getItem("libraryBooks")) || [];
+let issuedBooks = JSON.parse(localStorage.getItem("issuedBooks")) || [];
+
+// Display books
+function displayBooks(bookArray){
+  const bookList = document.getElementById("bookList");
+  bookList.innerHTML = "";
+
+  if(bookArray.length===0){
+    bookList.innerHTML="<p>No books available right now.</p>";
+    return;
+  }
+
+  bookArray.forEach((book,index)=>{
+    const div=document.createElement("div");
+    div.className="book-card";
+    div.innerHTML=`
+      <h4>${book.title}</h4>
+      <p>Fine: ₹${book.fine}</p>
+      <p>Available: ${book.quantity}</p>
+      <button onclick="issueBook(${index})" ${book.quantity<=0?'disabled':''}>
+        Issue Book
+      </button>
+    `;
+    bookList.appendChild(div);
+  });
+}
+
+// Search
+function searchBooks(){
+  const searchValue=document.getElementById("search").value.toLowerCase();
+  const filtered=books.filter(book=>book.title.toLowerCase().includes(searchValue));
+  displayBooks(filtered);
+}
+
+// Issue book
+function issueBook(index){
+  if(books[index].quantity<=0){
+    alert("Sorry, this book is not available!");
+    return;
+  }
+
+  issuedBooks.push(books[index]);
+  books[index].quantity -= 1;
+
+  localStorage.setItem("issuedBooks",JSON.stringify(issuedBooks));
+  localStorage.setItem("libraryBooks",JSON.stringify(books));
+
+  calculateDues();
+  displayBooks(books);
+  alert("Book Issued Successfully!");
+}
+
+// Calculate total dues
+function calculateDues(){
+  let total=0;
+  issuedBooks.forEach(book=>total+=parseInt(book.fine));
+  document.getElementById("duesAmount").innerText=total;
+}
+
+// Logout
+function logout(){
+  window.location.href="index.html";
+}
+
+// Listen for storage updates from librarian panel
+window.addEventListener('storage', function(event){
+  if(event.key==='libraryBooks'){
+    books=JSON.parse(event.newValue)||[];
+    displayBooks(books);
+  }
+});
+
+displayBooks(books);
+calculateDues();
+</script>
+
+</body>
+</html>

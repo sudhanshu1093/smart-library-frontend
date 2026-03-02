@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Library Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .card {
+      background: white;
+      width: 350px;
+      padding: 35px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 5px rgba(102,126,234,0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+      color: white;
+    }
+
+    .register-btn {
+      background: #28a745;
+    }
+
+    .register-btn:hover {
+      background: #1e7e34;
+    }
+
+    .back-btn {
+      background: #6c757d;
+    }
+
+    .back-btn:hover {
+      background: #545b62;
+    }
+
+    #message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>📝 Register</h2>
+
+  <select id="role">
+    <option value="">Select Role</option>
+    <option value="student">Student</option>
+    <option value="librarian">Librarian</option>
+  </select>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button class="register-btn" onclick="register()">Register</button>
+  <button class="back-btn" onclick="goToLogin()">Back to Login</button>
+
+  <p id="message"></p>
+</div>
+
+<script>
+  function register() {
+    const role = document.getElementById("role").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    if (!role || !username || !password) {
+      message.style.color = "red";
+      message.innerText = "Please fill all fields!";
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const userExists = users.find(u => u.username === username);
+
+    if (userExists) {
+      message.style.color = "red";
+      message.innerText = "Username already exists!";
+      return;
+    }
+
+    users.push({ username, password, role });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    message.style.color = "green";
+    message.innerText = "Registration successful!";
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+  }
+
+  function goToLogin() {
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>
