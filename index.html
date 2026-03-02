@@ -112,41 +112,56 @@
 </div>
 
 <script>
+const BASE_URL = "https://smart-library-backend-3762.onrender.com";
+
+// ✅ Already logged-in? then direct dashboard
+(function autoRedirectIfLoggedIn() {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  if (token && role) {
+    window.location.href = role === "student" ? "student.html" : "librarian.html";
+  }
+})();
+
 function login() {
   const role = document.getElementById("role").value;
-  const username = document.getElementById("username").value;
+  const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
   const error = document.getElementById("error");
+
+  error.innerText = "";
 
   if (!role || !username || !password) {
     error.innerText = "Please fill all fields!";
     return;
   }
 
-  fetch("https://smart-library-backend-3762.onrender.com/login", {
+  fetch(`${BASE_URL}/login`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      role: role,
-      username: username,
-      password: password
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ role, username, password })
+  })
+    .then(async (res) => {
+      const data = await res.json().catch(() => ({}));
+      return { res, data };
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      window.location.href = role === "student"
-        ? "student.html"
-        : "librarian.html";
-    } else {
-      error.innerText = data.message || "Invalid Credentials!";
-    }
-  })
-  .catch(err => {
-    error.innerText = "Server error! Backend not responding.";
-  });
+    .then(({ res, data }) => {
+      if (res.ok && data.success) {
+        // ✅ Save token + role for protected pages
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", role);
+        localStorage.setItem("username", username);
+
+        window.location.href = role === "student"
+          ? "student.html"
+          : "librarian.html";
+      } else {
+        error.innerText = data.message || "Invalid Credentials!";
+      }
+    })
+    .catch(() => {
+      error.innerText = "Server error! Backend not responding.";
+    });
 }
 
 function goToRegister() {
