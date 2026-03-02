@@ -111,9 +111,11 @@
 </div>
 
 <script>
-  function register() {
+  const BASE_URL = "https://smart-library-backend-3762.onrender.com";
+
+  async function register() {
     const role = document.getElementById("role").value;
-    const username = document.getElementById("username").value;
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
     const message = document.getElementById("message");
 
@@ -123,25 +125,33 @@
       return;
     }
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    message.style.color = "#333";
+    message.innerText = "Registering...";
 
-    const userExists = users.find(u => u.username === username);
+    try {
+      const res = await fetch(`${BASE_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role, username, password })
+      });
 
-    if (userExists) {
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.success) {
+        message.style.color = "green";
+        message.innerText = data.message || "Registration successful!";
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+      } else {
+        message.style.color = "red";
+        message.innerText = (data && data.message) ? data.message : "Registration failed!";
+      }
+    } catch (err) {
       message.style.color = "red";
-      message.innerText = "Username already exists!";
-      return;
+      message.innerText = "Server error! Backend not responding.";
     }
-
-    users.push({ username, password, role });
-    localStorage.setItem("users", JSON.stringify(users));
-
-    message.style.color = "green";
-    message.innerText = "Registration successful!";
-
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1500);
   }
 
   function goToLogin() {
