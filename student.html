@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Dashboard</title>
+
+<title>Smart Library</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -15,97 +16,96 @@ font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#f4f6fb;
-}
-
-.navbar{
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-padding:15px 30px;
+height:100vh;
 display:flex;
-justify-content:space-between;
+justify-content:center;
 align-items:center;
-}
-
-.logout-btn{
-background:white;
-color:#667eea;
-border:none;
-padding:8px 15px;
-border-radius:20px;
-cursor:pointer;
-font-weight:600;
+background:linear-gradient(135deg,#667eea,#764ba2);
 }
 
 .container{
-padding:30px;
-max-width:1000px;
-margin:auto;
+
+background:white;
+padding:40px;
+border-radius:15px;
+width:320px;
+text-align:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
 }
 
-.search-box{
+.container h2{
 margin-bottom:20px;
 }
 
-.search-box input{
+select,input{
+
 width:100%;
 padding:10px;
+margin:10px 0;
+
 border-radius:8px;
 border:1px solid #ccc;
+
 }
 
-.books{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
+button{
+
+width:100%;
+padding:10px;
+margin-top:10px;
+
+border:none;
+border-radius:8px;
+
+font-weight:600;
+cursor:pointer;
+
 }
 
-.book-card{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 8px 15px rgba(0,0,0,0.08);
-}
-
-.book-card button{
+.login-btn{
 background:#667eea;
 color:white;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
 }
 
-.dues{
-margin-top:30px;
-background:#fff3cd;
-padding:15px;
-border-radius:10px;
-font-weight:600;
+.register-btn{
+background:#28a745;
+color:white;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="navbar">
-<h2>📚 Student Dashboard</h2>
-<button class="logout-btn" onclick="logout()">Logout</button>
-</div>
-
 <div class="container">
 
-<div class="search-box">
-<input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
-</div>
+<h2>📚 Smart Library</h2>
 
-<div class="books" id="bookList"></div>
+<select id="role">
+<option value="">Select Role</option>
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
+</select>
 
-<div class="dues">
-Total Dues: ₹ <span id="duesAmount">0</span>
-</div>
+<input 
+type="text" 
+id="username" 
+placeholder="System ID (10 digits)" 
+maxlength="10"
+>
+
+<input 
+type="password" 
+id="password" 
+placeholder="Password"
+>
+
+<button class="login-btn" onclick="login()">Login</button>
+
+<button class="register-btn" onclick="register()">Register</button>
 
 </div>
 
@@ -113,80 +113,23 @@ Total Dues: ₹ <span id="duesAmount">0</span>
 
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
-let books=[];
+async function login(){
 
-const token = localStorage.getItem("token");
-if(!token){
-window.location.href="index.html";
-}
+const role=document.getElementById("role").value;
+const username=document.getElementById("username").value;
+const password=document.getElementById("password").value;
 
-// Load books from backend
-async function loadBooks(){
-
-try{
-
-const res=await fetch(`${BASE_URL}/books`);
-const data=await res.json();
-
-books=data.books;
-
-displayBooks(books);
-
-}catch(err){
-console.log(err);
-}
-
-}
-
-
-// Display books
-function displayBooks(bookArray){
-
-const bookList=document.getElementById("bookList");
-
-bookList.innerHTML="";
-
-if(bookArray.length===0){
-bookList.innerHTML="<p>No books available right now.</p>";
+if(!role || !username || !password){
+alert("Fill all fields");
 return;
 }
 
-bookArray.forEach(book=>{
-
-const div=document.createElement("div");
-
-div.className="book-card";
-
-div.innerHTML=`
-
-<h4>${book.title}</h4>
-<p>Author: ${book.author}</p>
-<p>Available: ${book.quantity}</p>
-
-<button onclick="issueBook('${book._id}')"
-${book.quantity<=0?'disabled':''}>
-
-Issue Book
-
-</button>
-
-`;
-
-bookList.appendChild(div);
-
-});
-
+if(!/^\d{10}$/.test(username)){
+alert("System ID must be exactly 10 digits");
+return;
 }
 
-
-// Issue book
-async function issueBook(bookId){
-
-const username = localStorage.getItem("username");
-
-try{
-
-const res=await fetch(`${BASE_URL}/issues/issue`,{
+const res=await fetch(`${BASE_URL}/login`,{
 
 method:"POST",
 
@@ -195,8 +138,11 @@ headers:{
 },
 
 body:JSON.stringify({
-bookId,
-username
+
+role,
+username,
+password
+
 })
 
 });
@@ -205,9 +151,14 @@ const data=await res.json();
 
 if(data.success){
 
-alert("Book issued successfully!");
+localStorage.setItem("token",data.token);
+localStorage.setItem("username",username);
 
-loadBooks();
+if(role==="librarian"){
+window.location.href="librarian.html";
+}else{
+window.location.href="student.html";
+}
 
 }else{
 
@@ -215,39 +166,49 @@ alert(data.message);
 
 }
 
-}catch(err){
-
-alert("Server error");
-
-}
-
 }
 
 
-// Search books
-function searchBooks(){
 
-const searchValue=document.getElementById("search").value.toLowerCase();
+async function register(){
 
-const filtered=books.filter(book=>
-book.title.toLowerCase().includes(searchValue)
-);
+const role=document.getElementById("role").value;
+const username=document.getElementById("username").value;
+const password=document.getElementById("password").value;
 
-displayBooks(filtered);
-
+if(!role || !username || !password){
+alert("Fill all fields");
+return;
 }
 
-
-// Logout
-function logout(){
-
-localStorage.removeItem("token");
-
-window.location.href="index.html";
-
+if(!/^\d{10}$/.test(username)){
+alert("System ID must be exactly 10 digits");
+return;
 }
 
-loadBooks();
+const res=await fetch(`${BASE_URL}/register`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+role,
+username,
+password
+
+})
+
+});
+
+const data=await res.json();
+
+alert(data.message);
+
+}
 
 </script>
 
