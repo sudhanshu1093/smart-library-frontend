@@ -1,205 +1,254 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<title>Student Dashboard</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    body {
-      background: #f4f6fb;
-    }
+<style>
 
-    .navbar {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-    .navbar h2 {
-      font-weight: 600;
-    }
+body{
+background:#f4f6fb;
+}
 
-    .logout-btn {
-      background: white;
-      color: #667eea;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-    }
+.navbar{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
 
-    .container {
-      padding: 30px;
-      max-width: 1000px;
-      margin: auto;
-    }
+.logout-btn{
+background:white;
+color:#667eea;
+border:none;
+padding:8px 15px;
+border-radius:20px;
+cursor:pointer;
+font-weight:600;
+}
 
-    .search-box {
-      margin-bottom: 20px;
-    }
+.container{
+padding:30px;
+max-width:1000px;
+margin:auto;
+}
 
-    .search-box input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+.search-box{
+margin-bottom:20px;
+}
 
-    .books {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
+.search-box input{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
-    .book-card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-      transition: 0.3s;
-    }
+.books{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+}
 
-    .book-card:hover {
-      transform: translateY(-5px);
-    }
+.book-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 8px 15px rgba(0,0,0,0.08);
+}
 
-    .book-card h4 {
-      margin-bottom: 10px;
-    }
+.book-card button{
+background:#667eea;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+}
 
-    .book-card button {
-      background: #667eea;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+.dues{
+margin-top:30px;
+background:#fff3cd;
+padding:15px;
+border-radius:10px;
+font-weight:600;
+}
 
-    .dues {
-      margin-top: 30px;
-      background: #fff3cd;
-      padding: 15px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
 <div class="navbar">
-  <h2>📚 Student Dashboard</h2>
-  <button class="logout-btn" onclick="logout()">Logout</button>
+<h2>📚 Student Dashboard</h2>
+<button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
 
-  <div class="search-box">
-    <input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
-  </div>
+<div class="search-box">
+<input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
+</div>
 
-  <div class="books" id="bookList"></div>
+<div class="books" id="bookList"></div>
 
-  <div class="dues">
-    Total Dues: ₹ <span id="duesAmount">0</span>
-  </div>
+<div class="dues">
+Total Dues: ₹ <span id="duesAmount">0</span>
+</div>
 
 </div>
 
 <script>
-let books = JSON.parse(localStorage.getItem("libraryBooks")) || [];
-let issuedBooks = JSON.parse(localStorage.getItem("issuedBooks")) || [];
+
+const BASE_URL = "https://smart-library-backend-3762.onrender.com";
+
+let books=[];
+
+const token = localStorage.getItem("token");
+if(!token){
+window.location.href="index.html";
+}
+
+// Load books from backend
+async function loadBooks(){
+
+try{
+
+const res=await fetch(`${BASE_URL}/books`);
+const data=await res.json();
+
+books=data.books;
+
+displayBooks(books);
+
+}catch(err){
+console.log(err);
+}
+
+}
+
 
 // Display books
 function displayBooks(bookArray){
-  const bookList = document.getElementById("bookList");
-  bookList.innerHTML = "";
 
-  if(bookArray.length===0){
-    bookList.innerHTML="<p>No books available right now.</p>";
-    return;
-  }
+const bookList=document.getElementById("bookList");
 
-  bookArray.forEach((book,index)=>{
-    const div=document.createElement("div");
-    div.className="book-card";
-    div.innerHTML=`
-      <h4>${book.title}</h4>
-      <p>Fine: ₹${book.fine}</p>
-      <p>Available: ${book.quantity}</p>
-      <button onclick="issueBook(${index})" ${book.quantity<=0?'disabled':''}>
-        Issue Book
-      </button>
-    `;
-    bookList.appendChild(div);
-  });
+bookList.innerHTML="";
+
+if(bookArray.length===0){
+bookList.innerHTML="<p>No books available right now.</p>";
+return;
 }
 
-// Search
-function searchBooks(){
-  const searchValue=document.getElementById("search").value.toLowerCase();
-  const filtered=books.filter(book=>book.title.toLowerCase().includes(searchValue));
-  displayBooks(filtered);
+bookArray.forEach(book=>{
+
+const div=document.createElement("div");
+
+div.className="book-card";
+
+div.innerHTML=`
+
+<h4>${book.title}</h4>
+<p>Author: ${book.author}</p>
+<p>Available: ${book.quantity}</p>
+
+<button onclick="issueBook('${book._id}')"
+${book.quantity<=0?'disabled':''}>
+
+Issue Book
+
+</button>
+
+`;
+
+bookList.appendChild(div);
+
+});
+
 }
+
 
 // Issue book
-function issueBook(index){
-  if(books[index].quantity<=0){
-    alert("Sorry, this book is not available!");
-    return;
-  }
+async function issueBook(bookId){
 
-  issuedBooks.push(books[index]);
-  books[index].quantity -= 1;
+const username = localStorage.getItem("username");
 
-  localStorage.setItem("issuedBooks",JSON.stringify(issuedBooks));
-  localStorage.setItem("libraryBooks",JSON.stringify(books));
+try{
 
-  calculateDues();
-  displayBooks(books);
-  alert("Book Issued Successfully!");
+const res=await fetch(`${BASE_URL}/issues/issue`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+bookId,
+username
+})
+
+});
+
+const data=await res.json();
+
+if(data.success){
+
+alert("Book issued successfully!");
+
+loadBooks();
+
+}else{
+
+alert(data.message);
+
 }
 
-// Calculate total dues
-function calculateDues(){
-  let total=0;
-  issuedBooks.forEach(book=>total+=parseInt(book.fine));
-  document.getElementById("duesAmount").innerText=total;
+}catch(err){
+
+alert("Server error");
+
 }
+
+}
+
+
+// Search books
+function searchBooks(){
+
+const searchValue=document.getElementById("search").value.toLowerCase();
+
+const filtered=books.filter(book=>
+book.title.toLowerCase().includes(searchValue)
+);
+
+displayBooks(filtered);
+
+}
+
 
 // Logout
 function logout(){
-  window.location.href="index.html";
+
+localStorage.removeItem("token");
+
+window.location.href="index.html";
+
 }
 
-// Listen for storage updates from librarian panel
-window.addEventListener('storage', function(event){
-  if(event.key==='libraryBooks'){
-    books=JSON.parse(event.newValue)||[];
-    displayBooks(books);
-  }
-});
+loadBooks();
 
-displayBooks(books);
-calculateDues();
-</script>
-
-<script>
-  const token = localStorage.getItem("token");
-  if (!token) window.location.href = "index.html";
 </script>
 
 </body>
