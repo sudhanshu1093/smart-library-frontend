@@ -111,52 +111,78 @@
 </div>
 
 <script>
-  const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
-  async function register() {
-    const role = document.getElementById("role").value;
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
-    const message = document.getElementById("message");
+const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
-    if (!role || !username || !password) {
-      message.style.color = "red";
-      message.innerText = "Please fill all fields!";
-      return;
-    }
+async function register() {
 
-    message.style.color = "#333";
-    message.innerText = "Registering...";
+  const role = document.getElementById("role").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  const message = document.getElementById("message");
 
+  if (!role || !username || !password) {
+    message.style.color = "red";
+    message.innerText = "Please fill all fields!";
+    return;
+  }
+
+  message.style.color = "#333";
+  message.innerText = "Registering...";
+
+  try {
+
+    const res = await fetch(`${BASE_URL}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        role: role,
+        username: username,
+        password: password
+      })
+    });
+
+    const text = await res.text();
+
+    let data = {};
     try {
-      const res = await fetch(`${BASE_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role, username, password })
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok && data.success) {
-        message.style.color = "green";
-        message.innerText = data.message || "Registration successful!";
-
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1200);
-      } else {
-        message.style.color = "red";
-        message.innerText = (data && data.message) ? data.message : "Registration failed!";
-      }
+      data = JSON.parse(text);
     } catch (err) {
-      message.style.color = "red";
-      message.innerText = "Server error! Backend not responding.";
+      console.error("Non JSON response:", text);
     }
+
+    if (res.ok && data.success) {
+
+      message.style.color = "green";
+      message.innerText = data.message || "Registration successful!";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1200);
+
+    } else {
+
+      message.style.color = "red";
+      message.innerText = data.message || "Registration failed";
+
+    }
+
+  } catch (err) {
+
+    console.error(err);
+    message.style.color = "red";
+    message.innerText = "Server error! Backend not responding.";
+
   }
 
-  function goToLogin() {
-    window.location.href = "index.html";
-  }
+}
+
+function goToLogin() {
+  window.location.href = "index.html";
+}
+
 </script>
 
 </body>
