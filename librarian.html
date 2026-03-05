@@ -1,178 +1,198 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Librarian Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
-    body{display:flex;height:100vh;background:#f4f6fb;}
-    .sidebar{
-      width:220px;
-      background:linear-gradient(135deg,#667eea,#764ba2);
-      color:white;
-      padding:25px 15px;
-    }
-    .sidebar h2{margin-bottom:30px;}
-    .sidebar button{
-      width:100%;padding:10px;margin:10px 0;border:none;
-      border-radius:8px;background:white;color:#667eea;
-      font-weight:600;cursor:pointer;
-    }
-    .main{flex:1;padding:30px;}
-    .card{
-      background:white;padding:20px;border-radius:12px;
-      box-shadow:0 8px 15px rgba(0,0,0,0.08);
-      margin-bottom:20px;
-    }
-    input{
-      width:100%;padding:8px;margin:8px 0;
-      border-radius:6px;border:1px solid #ccc;
-    }
-    .add-btn{
-      background:#28a745;color:white;border:none;
-      padding:8px;border-radius:6px;cursor:pointer;
-      width:100%;font-weight:600;
-    }
-    .book-list div{
-      background:#f1f3ff;padding:10px;margin:8px 0;
-      border-radius:8px;display:flex;
-      justify-content:space-between;align-items:center;
-    }
-  </style>
+<title>Librarian Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
+body{display:flex;height:100vh;background:#f4f6fb;}
+
+.sidebar{
+width:220px;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+padding:25px 15px;
+}
+
+.sidebar h2{margin-bottom:30px;}
+
+.sidebar button{
+width:100%;
+padding:10px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+background:white;
+color:#667eea;
+font-weight:600;
+cursor:pointer;
+}
+
+.main{flex:1;padding:30px;}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 8px 15px rgba(0,0,0,0.08);
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:8px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.add-btn{
+background:#28a745;
+color:white;
+border:none;
+padding:8px;
+border-radius:6px;
+cursor:pointer;
+width:100%;
+font-weight:600;
+}
+
+.book-list div{
+background:#f1f3ff;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+</style>
+
 </head>
+
 <body>
 
 <div class="sidebar">
-  <h2>📚 Librarian</h2>
-  <button onclick="logout()">Logout</button>
+<h2>📚 Librarian</h2>
+<button onclick="logout()">Logout</button>
 </div>
 
 <div class="main">
 
-  <div class="card">
-    <h3>Add New Book</h3>
-    <input type="text" id="bookName" placeholder="Book Name">
-    <input type="text" id="authorname" placeholder="Author Name">
-    <input type="number" id="bookQty" placeholder="Quantity">
-    <button class="add-btn" onclick="addBook()">Add Book</button>
-  </div>
+<div class="card">
+<h3>Add New Book</h3>
 
-  <div class="card">
-    <h3>All Books (<span id="totalBooks">0</span>)</h3>
-    <div class="book-list" id="bookList"></div>
-  </div>
+<input type="text" id="bookName" placeholder="Book Name">
+<input type="text" id="authorname" placeholder="Author Name">
+<input type="number" id="bookQty" placeholder="Quantity">
+
+<button class="add-btn" onclick="addBook()">Add Book</button>
+</div>
+
+<div class="card">
+<h3>All Books (<span id="totalBooks">0</span>)</h3>
+<div class="book-list" id="bookList"></div>
+</div>
 
 </div>
 
 <script>
-let books = JSON.parse(localStorage.getItem("libraryBooks")) || [];
 
-function displayBooks(){
-  const list = document.getElementById("bookList");
-  const total = document.getElementById("totalBooks");
-  list.innerHTML="";
-  total.innerText = books.length;
-
-  books.forEach((book,index)=>{
-    list.innerHTML += `
-      <div>
-        ${book.title} | ₹${book.fine}/day | Available: ${book.quantity}
-      </div>
-    `;
-  });
-}
-
-// Add book
-function addBook(){
-  const name=document.getElementById("bookName").value;
-  const fine=document.getElementById("bookFine").value;
-  const qty=document.getElementById("bookQty").value;
-
-  if(!name||!fine||!qty){
-    alert("Fill all fields!");
-    return;
-  }
-
-  books.push({
-    title:name,
-    fine:parseInt(fine),
-    quantity:parseInt(qty)
-  });
-
-  localStorage.setItem("libraryBooks",JSON.stringify(books));
-  displayBooks();
-
-  // Clear inputs
-  document.getElementById("bookName").value = "";
-  document.getElementById("bookFine").value = "";
-  document.getElementById("bookQty").value = "";
-}
-
-// Logout
-function logout(){
-  window.location.href="index.html";
-}
-
-displayBooks();
-
-// Listen to storage changes (optional, for multiple tabs)
-window.addEventListener('storage', function(event){
-  if(event.key === 'libraryBooks'){
-    books = JSON.parse(event.newValue) || [];
-    displayBooks();
-  }
-});
-</script>
-
-<script>
-  const token = localStorage.getItem("token");
-  if (!token) window.location.href = "index.html";
-</script>
-
-<script>
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
-async function addBook() {
+const token = localStorage.getItem("token");
+if(!token){
+window.location.href="index.html";
+}
 
-  const title = document.getElementById("bookName").value;
-  const author = document.getElementById("author").value;
-  const quantity = document.getElementById("quantity").value;
+async function loadBooks(){
 
-  if(!title || !author || !quantity){
-    alert("Fill all fields");
-    return;
-  }
+try{
 
-  try {
+const res = await fetch(`${BASE_URL}/books`);
+const data = await res.json();
 
-    const res = await fetch(`${BASE_URL}/books`, {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        title:title,
-        author:author,
-        quantity:quantity
-      })
-    });
+const list=document.getElementById("bookList");
+const total=document.getElementById("totalBooks");
 
-    const data = await res.json();
+list.innerHTML="";
+total.innerText=data.books.length;
 
-    if(data.success){
-      alert("Book added successfully");
-      location.reload();
-    } else {
-      alert(data.message);
-    }
+data.books.forEach(book=>{
 
-  } catch(err){
-    alert("Server error");
-  }
+list.innerHTML += `
+<div>
+<b>${book.title}</b> by ${book.author}
+<span>Qty: ${book.quantity}</span>
+</div>
+`;
+
+});
+
+}catch(err){
+console.log(err);
+}
 
 }
-</script>
 
+
+async function addBook(){
+
+const title=document.getElementById("bookName").value;
+const author=document.getElementById("authorname").value;
+const quantity=document.getElementById("bookQty").value;
+
+if(!title||!author||!quantity){
+alert("Fill all fields");
+return;
+}
+
+try{
+
+const res = await fetch(`${BASE_URL}/books`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+title,
+author,
+quantity
+})
+});
+
+const data=await res.json();
+
+if(data.success){
+
+alert("Book added successfully");
+
+document.getElementById("bookName").value="";
+document.getElementById("authorname").value="";
+document.getElementById("bookQty").value="";
+
+loadBooks();
+
+}else{
+alert(data.message);
+}
+
+}catch(err){
+alert("Server error");
+}
+
+}
+
+function logout(){
+localStorage.removeItem("token");
+window.location.href="index.html";
+}
+
+loadBooks();
+
+</script>
 
 </body>
 </html>
