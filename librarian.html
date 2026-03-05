@@ -103,6 +103,7 @@ align-items:center;
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 const token = localStorage.getItem("token");
+
 if(!token){
 window.location.href="index.html";
 }
@@ -132,7 +133,9 @@ list.innerHTML += `
 });
 
 }catch(err){
+
 console.log(err);
+
 }
 
 }
@@ -140,30 +143,39 @@ console.log(err);
 
 async function addBook(){
 
-const title=document.getElementById("bookName").value;
-const author=document.getElementById("authorname").value;
-const quantity=document.getElementById("bookQty").value;
+const title=document.getElementById("bookName").value.trim();
+const author=document.getElementById("authorname").value.trim();
+const quantity=Number(document.getElementById("bookQty").value);
 
-if(!title||!author||!quantity){
+if(!title || !author || !quantity){
 alert("Fill all fields");
+return;
+}
+
+if(quantity<1){
+alert("Quantity must be greater than 0");
 return;
 }
 
 try{
 
 const res = await fetch(`${BASE_URL}/books`,{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 title,
 author,
 quantity
 })
+
 });
 
-const data=await res.json();
+const data = await res.json();
 
 if(data.success){
 
@@ -176,18 +188,25 @@ document.getElementById("bookQty").value="";
 loadBooks();
 
 }else{
+
 alert(data.message);
+
 }
 
 }catch(err){
+
 alert("Server error");
+
 }
 
 }
+
 
 function logout(){
+
 localStorage.removeItem("token");
 window.location.href="index.html";
+
 }
 
 loadBooks();
