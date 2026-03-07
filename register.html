@@ -1,151 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Smart Library Register</title>
+
+<title>Register</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-}
-
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#667eea,#764ba2);
-}
-
-.card{
-background:white;
-width:350px;
-padding:35px;
-border-radius:15px;
-box-shadow:0 15px 30px rgba(0,0,0,0.2);
-text-align:center;
-}
-
-input,select{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
-button{
-width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-color:white;
-font-weight:600;
-}
-
-.register-btn{
-background:#28a745;
-}
-
-.back-btn{
-background:#667eea;
-}
-
-</style>
-
 </head>
 
-<body>
+<body class="login-page">
+
+<div class="overlay">
 
 <div class="card">
 
-<h2>Register</h2>
+<h2>Create Account</h2>
 
-<select id="role">
-<option value="">Select Role</option>
-<option value="student">Student</option>
-<option value="librarian">Librarian</option>
+<select>
+<option>Select Role</option>
+<option>Student</option>
+<option>Librarian</option>
+<option>Admin</option>
 </select>
 
-<input
-type="text"
-id="username"
-placeholder="System ID"
-maxlength="10"
->
+<input type="text" placeholder="System ID">
 
-<input
-type="password"
-id="password"
-placeholder="Password"
->
+<input type="email" placeholder="Email">
 
-<button class="register-btn" onclick="register()">Register</button>
+<input type="password" placeholder="Password">
 
-<button class="back-btn" onclick="goBack()">Back to Login</button>
+<input type="password" placeholder="Confirm Password">
 
-<p id="msg" style="margin-top:10px;"></p>
+<button>Register</button>
+
+<div class="links">
+<a href="index.html">Back to Login</a>
+</div>
 
 </div>
 
-<script>
-
-const BASE_URL = "https://smart-library-backend-3762.onrender.com";
-
-async function register(){
-
-const role=document.getElementById("role").value;
-const username=document.getElementById("username").value.trim();
-const password=document.getElementById("password").value.trim();
-
-const msg=document.getElementById("msg");
-
-msg.innerText="";
-
-try{
-
-const res=await fetch(`${BASE_URL}/register`,{
-
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-role,
-username,
-password
-})
-
-});
-
-const data=await res.json();
-
-if(data.success){
-msg.style.color="green";
-msg.innerText="Registered successfully";
-}else{
-msg.style.color="red";
-msg.innerText=data.message || "Registration failed";
-}
-
-}catch(err){
-msg.innerText="Server error";
-}
-
-}
-
-function goBack(){
-window.location.href="index.html";
-}
-
-</script>
+</div>
 
 </body>
+
 </html>
