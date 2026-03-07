@@ -1,125 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Smart Library Register</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<title>Smart Library Register</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    body{
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:linear-gradient(135deg,#667eea,#764ba2);
-    }
+<style>
 
-    .card{
-      background:white;
-      width:350px;
-      padding:35px;
-      border-radius:15px;
-      box-shadow:0 15px 30px rgba(0,0,0,0.2);
-      text-align:center;
-      animation:fadeIn 0.6s ease-in-out;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
 
-    .card h2{
-      margin-bottom:20px;
-      color:#333;
-    }
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#667eea,#764ba2);
+}
 
-    select,input{
-      width:100%;
-      padding:10px;
-      margin:10px 0;
-      border-radius:8px;
-      border:1px solid #ddd;
-      outline:none;
-      transition:0.3s;
-    }
+.card{
+background:white;
+width:350px;
+padding:35px;
+border-radius:15px;
+box-shadow:0 15px 30px rgba(0,0,0,0.2);
+text-align:center;
+}
 
-    select:focus,input:focus{
-      border-color:#667eea;
-      box-shadow:0 0 5px rgba(102,126,234,0.5);
-    }
+input,select{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ddd;
+}
 
-    button{
-      width:100%;
-      padding:10px;
-      margin-top:10px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      transition:0.3s;
-      color:white;
-    }
+button{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+color:white;
+font-weight:600;
+}
 
-    .register-btn{
-      background:#28a745;
-    }
+.register-btn{
+background:#28a745;
+}
 
-    .register-btn:hover{
-      background:#1e7e34;
-    }
+.back-btn{
+background:#667eea;
+}
 
-    .back-btn{
-      background:#6c757d;
-    }
+</style>
 
-    .back-btn:hover{
-      background:#545b62;
-    }
-
-    #message{
-      margin-top:10px;
-      font-size:14px;
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(20px);}
-      to{opacity:1;transform:translateY(0);}
-    }
-  </style>
 </head>
 
 <body>
 
 <div class="card">
 
-  <h2>📝 Register</h2>
+<h2>Register</h2>
 
-  <select id="role">
-    <option value="">Select Role</option>
-    <option value="student">Student</option>
-    <option value="librarian">Librarian</option>
-  </select>
+<select id="role">
+<option value="">Select Role</option>
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
+</select>
 
-  <!-- System ID input -->
-  <input
-    type="text"
-    id="username"
-    placeholder="System ID"
-    maxlength="10"
-  >
+<input
+type="text"
+id="username"
+placeholder="System ID"
+maxlength="10"
+>
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
+<input
+type="password"
+id="password"
+placeholder="Password"
+>
 
-  <button class="register-btn" onclick="register()">Register</button>
-  <button class="back-btn" onclick="goToLogin()">Back to Login</button>
+<button class="register-btn" onclick="register()">Register</button>
 
-  <p id="message"></p>
+<button class="back-btn" onclick="goBack()">Back to Login</button>
+
+<p id="msg" style="margin-top:10px;"></p>
 
 </div>
 
@@ -129,82 +101,48 @@ const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 async function register(){
 
-  const role=document.getElementById("role").value;
-  const username=document.getElementById("username").value.trim();
-  const password=document.getElementById("password").value;
-  const message=document.getElementById("message");
+const role=document.getElementById("role").value;
+const username=document.getElementById("username").value.trim();
+const password=document.getElementById("password").value.trim();
 
-  if(!role || !username || !password){
+const msg=document.getElementById("msg");
 
-    message.style.color="red";
-    message.innerText="Please fill all fields!";
-    return;
+msg.innerText="";
 
-  }
+try{
 
-  // ✅ System ID validation (10 digits only)
+const res=await fetch(`${BASE_URL}/register`,{
 
-  if(!/^\d{10}$/.test(username)){
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+role,
+username,
+password
+})
 
-    message.style.color="red";
-    message.innerText="System ID must be exactly 10 digits";
-    return;
+});
 
-  }
+const data=await res.json();
 
-  message.style.color="#333";
-  message.innerText="Registering...";
+if(data.success){
+msg.style.color="green";
+msg.innerText="Registered successfully";
+}else{
+msg.style.color="red";
+msg.innerText=data.message || "Registration failed";
+}
 
-  try{
-
-    const res=await fetch(`${BASE_URL}/register`,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body:JSON.stringify({
-        role,
-        username,
-        password
-      })
-
-    });
-
-    const data=await res.json();
-
-    if(res.ok && data.success){
-
-      message.style.color="green";
-      message.innerText=data.message || "Registration successful!";
-
-      setTimeout(()=>{
-        window.location.href="index.html";
-      },1200);
-
-    }else{
-
-      message.style.color="red";
-      message.innerText=data.message || "Registration failed";
-
-    }
-
-  }catch(err){
-
-    console.error(err);
-    message.style.color="red";
-    message.innerText="Server error! Backend not responding.";
-
-  }
+}catch(err){
+msg.innerText="Server error";
+}
 
 }
 
-function goToLogin(){
-
-  window.location.href="index.html";
-
+function goBack(){
+window.location.href="index.html";
 }
 
 </script>

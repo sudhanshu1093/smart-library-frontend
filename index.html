@@ -1,131 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Smart Library Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<title>Smart Library Login</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    body{
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:linear-gradient(135deg,#667eea,#764ba2);
-    }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
 
-    .card{
-      background:white;
-      width:350px;
-      padding:35px;
-      border-radius:15px;
-      box-shadow:0 15px 30px rgba(0,0,0,0.2);
-      text-align:center;
-      animation:fadeIn 0.6s ease-in-out;
-    }
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#667eea,#764ba2);
+}
 
-    .card h2{
-      margin-bottom:20px;
-      color:#333;
-    }
+.card{
+background:white;
+width:350px;
+padding:35px;
+border-radius:15px;
+box-shadow:0 15px 30px rgba(0,0,0,0.2);
+text-align:center;
+}
 
-    select,input{
-      width:100%;
-      padding:10px;
-      margin:10px 0;
-      border-radius:8px;
-      border:1px solid #ddd;
-      outline:none;
-      transition:0.3s;
-    }
+.card h2{
+margin-bottom:20px;
+}
 
-    select:focus,input:focus{
-      border-color:#667eea;
-      box-shadow:0 0 5px rgba(102,126,234,0.5);
-    }
+select,input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ddd;
+}
 
-    button{
-      width:100%;
-      padding:10px;
-      margin-top:10px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      transition:0.3s;
-      color:white;
-    }
+button{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+color:white;
+}
 
-    .login-btn{
-      background:#667eea;
-    }
+.login-btn{
+background:#667eea;
+}
 
-    .login-btn:hover{
-      background:#5563c1;
-    }
-
-    .register-btn{
-      background:#28a745;
-    }
-
-    .register-btn:hover{
-      background:#1e7e34;
-    }
-
-    #error{
-      color:red;
-      margin-top:10px;
-      font-size:14px;
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(20px);}
-      to{opacity:1;transform:translateY(0);}
-    }
-  </style>
+.register-btn{
+background:#28a745;
+}
+</style>
 </head>
 
 <body>
 
 <div class="card">
 
-  <h2>📚 Smart Library</h2>
+<h2>📚 Smart Library</h2>
 
-  <select id="role">
-    <option value="">Select Role</option>
-    <option value="student">Student</option>
-    <option value="librarian">Librarian</option>
-  </select>
+<form id="loginForm">
 
-  <!-- System ID input -->
-  <input 
-    type="text"
-    id="username"
-    placeholder="System ID"
-    maxlength="10"
-  >
+<select id="role">
+<option value="">Select Role</option>
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
+</select>
 
-  <input 
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
+<input
+type="text"
+id="username"
+placeholder="System ID"
+maxlength="10"
+required
+>
 
-  <button class="login-btn" onclick="login()">Login</button>
+<input
+type="password"
+id="password"
+placeholder="Password"
+required
+>
 
-  <button class="register-btn" onclick="goToRegister()">Register</button>
+<button type="submit" class="login-btn">Login</button>
 
-  <p id="error"></p>
+</form>
+
+<button onclick="goToRegister()" class="register-btn">Register</button>
+
+<p id="error" style="color:red;margin-top:10px;"></p>
 
 </div>
 
-<script src="script.js?v=2"></script> 
+<script>
+
+const BASE_URL = "https://smart-library-backend-3762.onrender.com";
+
+document.getElementById("loginForm").addEventListener("submit", login);
+
+async function login(e){
+
+e.preventDefault();
+
+const username = document.getElementById("username").value.trim();
+const password = document.getElementById("password").value.trim();
+const role = document.getElementById("role").value;
+const error = document.getElementById("error");
+
+error.innerText="";
+
+if(!role){
+error.innerText="Select role";
+return;
+}
+
+try{
+
+const res = await fetch(`${BASE_URL}/login`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+role,
+username,
+password
+})
+});
+
+const data = await res.json();
+
+if(data.success){
+
+localStorage.setItem("token",data.token);
+localStorage.setItem("role",role);
+localStorage.setItem("username",username);
+
+if(role==="student"){
+window.location.href="student.html";
+}else{
+window.location.href="librarian.html";
+}
+
+}else{
+error.innerText=data.message || "Invalid credentials";
+}
+
+}catch(err){
+error.innerText="Server error";
+}
+
+}
+
+function goToRegister(){
+window.location.href="register.html";
+}
+
+</script>
 
 </body>
 </html>
