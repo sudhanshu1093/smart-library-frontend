@@ -1,213 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Smart Library</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#667eea,#764ba2);
-}
-
-.container{
-
-background:white;
-padding:40px;
-border-radius:15px;
-width:320px;
-text-align:center;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-
-}
-
-.container h2{
-margin-bottom:20px;
-}
-
-select,input{
-
-width:100%;
-padding:10px;
-margin:10px 0;
-
-border-radius:8px;
-border:1px solid #ccc;
-
-}
-
-button{
-
-width:100%;
-padding:10px;
-margin-top:10px;
-
-border:none;
-border-radius:8px;
-
-font-weight:600;
-cursor:pointer;
-
-}
-
-.login-btn{
-background:#667eea;
-color:white;
-}
-
-.register-btn{
-background:#28a745;
-color:white;
-}
-
-</style>
-
+<title>Student Dashboard</title>
 </head>
 
 <body>
 
-<div class="container">
+<h1>Student Dashboard</h1>
 
-<h2>📚 Smart Library</h2>
+<p id="user"></p>
 
-<select id="role">
-<option value="">Select Role</option>
-<option value="student">Student</option>
-<option value="librarian">Librarian</option>
-</select>
-
-<input 
-type="text" 
-id="username" 
-placeholder="System ID (10 digits)" 
-maxlength="10"
->
-
-<input 
-type="password" 
-id="password" 
-placeholder="Password"
->
-
-<button class="login-btn" onclick="login()">Login</button>
-
-<button class="register-btn" onclick="register()">Register</button>
-
-</div>
+<button onclick="logout()">Logout</button>
 
 <script>
 
-const BASE_URL = "https://smart-library-backend-3762.onrender.com";
+const username = localStorage.getItem("username");
 
-async function login(){
+document.getElementById("user").innerText =
+"Welcome " + username;
 
-const role=document.getElementById("role").value;
-const username=document.getElementById("username").value;
-const password=document.getElementById("password").value;
-
-if(!role || !username || !password){
-alert("Fill all fields");
-return;
-}
-
-if(!/^\d{10}$/.test(username)){
-alert("System ID must be exactly 10 digits");
-return;
-}
-
-const res=await fetch(`${BASE_URL}/login`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-role,
-username,
-password
-
-})
-
-});
-
-const data=await res.json();
-
-if(data.success){
-
-localStorage.setItem("token",data.token);
-localStorage.setItem("username",username);
-
-if(role==="librarian"){
-window.location.href="librarian.html";
-}else{
-window.location.href="student.html";
-}
-
-}else{
-
-alert(data.message);
-
-}
-
-}
-
-
-
-async function register(){
-
-const role=document.getElementById("role").value;
-const username=document.getElementById("username").value;
-const password=document.getElementById("password").value;
-
-if(!role || !username || !password){
-alert("Fill all fields");
-return;
-}
-
-if(!/^\d{10}$/.test(username)){
-alert("System ID must be exactly 10 digits");
-return;
-}
-
-const res=await fetch(`${BASE_URL}/register`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-role,
-username,
-password
-
-})
-
-});
-
-const data=await res.json();
-
-alert(data.message);
-
+function logout(){
+localStorage.clear();
+window.location.href="index.html";
 }
 
 </script>
