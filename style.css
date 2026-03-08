@@ -257,4 +257,132 @@ width:55px;
 padding:6px 14px;
 }
 
+/* LOGIN PAGE HEADER */
+
+.header{
+text-align:center;
+margin-top:40px;
+}
+
+.tagline{
+margin-top:10px;
+font-size:18px;
+color:#333;
+}
+
+.tagline span{
+color:#3d63d2;
+font-weight:600;
+}
+
+/* LOGIN CARD */
+
+.login-card{
+
+width:350px;
+
+margin:40px auto;
+
+background:rgba(255,255,255,0.9);
+
+padding:35px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+
+}
+
+/* ICON CIRCLE */
+
+.icon-circle{
+
+width:90px;
+height:90px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:white;
+
+position:relative;
+
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+
+}
+
+/* EARTH */
+
+.earth{
+width:90px;
+}
+
+/* PEOPLE */
+
+.people{
+
+width:55px;
+
+position:absolute;
+
+top:18px;
+left:18px;
+
+}
+
+/* LOGIN FIELDS */
+
+.field{
+
+width:100%;
+
+padding:10px;
+
+margin-top:12px;
+
+border-radius:8px;
+
+border:1px solid #ccc;
+
+}
+
+/* LOGIN BUTTON */
+
+.login-btn{
+
+width:100%;
+
+margin-top:15px;
+
+padding:10px;
+
+background:#3d63d2;
+
+color:white;
+
+border:none;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+/* REGISTER LINK */
+
+.register{
+
+display:block;
+
+margin-top:12px;
+
+color:#3d63d2;
+
+text-decoration:none;
+
+}
+
 }
