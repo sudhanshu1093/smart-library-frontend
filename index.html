@@ -28,13 +28,6 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <div class="login-card">
 
-<div class="icon-circle">
-
-<img src="earth.png" class="earth">
-<img src="people.png" class="people">
-
-</div>
-
 <h2>Smart Library Login</h2>
 
 <form id="loginForm">
@@ -45,9 +38,9 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 <option value="librarian">Librarian</option>
 </select>
 
-<input class="field" type="text" placeholder="System ID">
+<input class="field" type="text" id="username" placeholder="Username">
 
-<input class="field" type="password" placeholder="Password">
+<input class="field" type="password" id="password" placeholder="Password">
 
 <button class="login-btn">Sign In</button>
 
@@ -61,15 +54,65 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <script>
 
-document.getElementById("loginForm").addEventListener("submit",function(e){
+const BASE_URL="https://smart-library-backend-3762.onrender.com";
+
+document.getElementById("loginForm").addEventListener("submit",async function(e){
 
 e.preventDefault();
 
 let role=document.getElementById("role").value;
+let username=document.getElementById("username").value;
+let password=document.getElementById("password").value;
 
-if(role==="student") window.location="student.html";
+if(!role||!username||!password){
+alert("Fill all fields");
+return;
+}
 
-if(role==="librarian") window.location="librarian.html";
+try{
+
+const res=await fetch(`${BASE_URL}/login`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+role,
+username,
+password
+})
+
+});
+
+const data=await res.json();
+
+if(data.success){
+
+localStorage.setItem("token",data.token);
+localStorage.setItem("username",username);
+
+if(role==="student"){
+window.location="student.html";
+}
+
+if(role==="librarian"){
+window.location="librarian.html";
+}
+
+}else{
+
+alert(data.message);
+
+}
+
+}catch(err){
+
+alert("Server error");
+
+}
 
 });
 
