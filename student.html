@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Student Dashboard</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -15,77 +18,113 @@ font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#f4f6fb;
+background:#eef1f8;
 }
+
+/* NAVBAR */
 
 .navbar{
 background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
-padding:15px 30px;
+padding:15px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
 .logout-btn{
 background:white;
 color:#667eea;
 border:none;
-padding:8px 15px;
+padding:8px 18px;
 border-radius:20px;
 cursor:pointer;
 font-weight:600;
 }
 
+/* CONTAINER */
+
 .container{
-padding:30px;
-max-width:1000px;
+padding:40px;
+max-width:1100px;
 margin:auto;
 }
 
+/* SEARCH */
+
 .search-box{
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .search-box input{
 width:100%;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
+padding:12px;
+border-radius:10px;
+border:none;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
+
+/* BOOK GRID */
 
 .books{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:25px;
 }
+
+/* BOOK CARD */
 
 .book-card{
 background:white;
 padding:20px;
-border-radius:12px;
-box-shadow:0 8px 15px rgba(0,0,0,0.08);
+border-radius:14px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.book-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.book-card h4{
+margin-bottom:6px;
+}
+
+.book-card p{
+font-size:14px;
+color:#555;
 }
 
 .book-card button{
 background:#667eea;
 color:white;
 border:none;
-padding:6px 10px;
-border-radius:6px;
+padding:7px 12px;
+border-radius:8px;
 cursor:pointer;
-margin-top:10px;
+margin-top:12px;
+font-size:13px;
 }
 
+/* DUES */
+
 .dues{
-margin-top:30px;
-background:#fff3cd;
-padding:15px;
-border-radius:10px;
+margin-top:40px;
+background:white;
+padding:18px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 font-weight:600;
 }
 
+.dues span{
+color:#e63946;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -94,6 +133,7 @@ font-weight:600;
 <h2>📚 Student Dashboard</h2>
 <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
+
 
 <div class="container">
 
@@ -109,18 +149,16 @@ Total Dues: ₹ <span id="duesAmount">0</span>
 
 </div>
 
+
 <script>
 
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 let books=[];
 
-const token = localStorage.getItem("token");
-if(!token){
-window.location.href="index.html";
-}
 
-// Load books from backend
+/* LOAD BOOKS */
+
 async function loadBooks(){
 
 try{
@@ -139,7 +177,8 @@ console.log(err);
 }
 
 
-// Display books
+/* DISPLAY BOOKS */
+
 function displayBooks(bookArray){
 
 const bookList=document.getElementById("bookList");
@@ -160,7 +199,9 @@ div.className="book-card";
 div.innerHTML=`
 
 <h4>${book.title}</h4>
+
 <p>Author: ${book.author}</p>
+
 <p>Available: ${book.quantity}</p>
 
 <button onclick="issueBook('${book._id}')"
@@ -179,7 +220,8 @@ bookList.appendChild(div);
 }
 
 
-// Issue book
+/* ISSUE BOOK */
+
 async function issueBook(bookId){
 
 const username = localStorage.getItem("username");
@@ -224,7 +266,8 @@ alert("Server error");
 }
 
 
-// Search books
+/* SEARCH */
+
 function searchBooks(){
 
 const searchValue=document.getElementById("search").value.toLowerCase();
@@ -238,7 +281,8 @@ displayBooks(filtered);
 }
 
 
-// Logout
+/* LOGOUT */
+
 function logout(){
 
 localStorage.removeItem("token");
@@ -246,6 +290,9 @@ localStorage.removeItem("token");
 window.location.href="index.html";
 
 }
+
+
+/* START */
 
 loadBooks();
 
