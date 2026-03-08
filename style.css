@@ -98,17 +98,14 @@ box-shadow:
 /* ROTATING EARTH */
 
 .earth{
-
 width:95px;
-
-position:absolute;
-top:0;
-left:0;
-
-animation:spin 8s linear infinite;
-
+animation:spin 6s linear infinite;
 }
 
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
 
 /* PEOPLE ICON */
 
