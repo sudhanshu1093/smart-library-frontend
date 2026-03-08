@@ -2,49 +2,30 @@
 <html>
 <head>
 
-<title>Register</title>
+<title>Student Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body>
+<body class="blur-bg">
 
-<div class="header">
+<div class="navbar">
 
-<img src="logo.png" class="logo">
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:40px;">
+<h2>Student Dashboard</h2>
+</div>
 
-<p class="tagline">THE WORLD IS HERE. WHERE ARE YOU?</p>
+<button onclick="logout()" class="login-btn" style="width:120px;height:35px;padding:0;">Logout</button>
 
 </div>
 
-<div class="center-box">
+<div class="container">
 
-<div class="login-card">
+<input id="search" class="field" placeholder="Search books..." onkeyup="searchBooks()">
 
-<div class="icon-circle">
-<img src="earth.png" class="earth">
-<img src="people.png" class="people">
-</div>
-
-<h2>Register</h2>
-
-<select class="field" id="role">
-<option value="student">Student</option>
-<option value="librarian">Librarian</option>
-</select>
-
-<input class="field" id="username" placeholder="Username">
-
-<input class="field" id="password" type="password" placeholder="Password">
-
-<button class="login-btn" onclick="register()">Register</button>
-
-<br><br>
-
-<a href="index.html">Back to Login</a>
-
-</div>
+<div id="bookList"></div>
 
 </div>
 
@@ -52,13 +33,64 @@
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
-async function register(){
+let books=[];
 
-let role=document.getElementById("role").value;
-let username=document.getElementById("username").value;
-let password=document.getElementById("password").value;
+async function loadBooks(){
 
-const res=await fetch(`${BASE_URL}/register`,{
+const res=await fetch(`${BASE_URL}/books`);
+const data=await res.json();
+
+books=data.books;
+
+displayBooks(books);
+
+}
+
+function displayBooks(bookArray){
+
+const list=document.getElementById("bookList");
+
+list.innerHTML="";
+
+bookArray.forEach(book=>{
+
+list.innerHTML+=`
+
+<div class="book-card">
+
+<h3>${book.title}</h3>
+
+<p>Author: ${book.author}</p>
+
+<p>Available: ${book.quantity}</p>
+
+<button onclick="issueBook('${book._id}')">Issue</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+function searchBooks(){
+
+let value=document.getElementById("search").value.toLowerCase();
+
+let filtered=books.filter(book =>
+book.title.toLowerCase().includes(value)
+);
+
+displayBooks(filtered);
+
+}
+
+async function issueBook(bookId){
+
+const username=localStorage.getItem("username");
+
+await fetch(`${BASE_URL}/issues/issue`,{
 
 method:"POST",
 
@@ -67,23 +99,26 @@ headers:{
 },
 
 body:JSON.stringify({
-role,
-username,
-password
+bookId,
+username
 })
 
 });
 
-const data=await res.json();
+alert("Book Issued");
 
-if(data.success){
-alert("Registered Successfully");
+loadBooks();
+
+}
+
+function logout(){
+
+localStorage.clear();
 window.location="index.html";
-}else{
-alert(data.message);
-}
 
 }
+
+loadBooks();
 
 </script>
 
