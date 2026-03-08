@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Student Dashboard</title>
+<title>Student Portal</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,7 +18,7 @@ font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#eef1f8;
+background:#f4f6fb;
 }
 
 /* NAVBAR */
@@ -26,11 +26,11 @@ background:#eef1f8;
 .navbar{
 background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
-padding:15px 40px;
+padding:15px 35px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 4px 12px rgba(0,0,0,0.15);
+box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 .logout-btn{
@@ -46,31 +46,28 @@ font-weight:600;
 /* CONTAINER */
 
 .container{
-padding:40px;
 max-width:1100px;
 margin:auto;
+padding:35px;
 }
 
-/* SEARCH */
-
-.search-box{
-margin-bottom:25px;
-}
+/* SEARCH BAR */
 
 .search-box input{
 width:100%;
 padding:12px;
 border-radius:10px;
 border:none;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+margin-bottom:25px;
 }
 
 /* BOOK GRID */
 
 .books{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+gap:20px;
 }
 
 /* BOOK CARD */
@@ -78,49 +75,43 @@ gap:25px;
 .book-card{
 background:white;
 padding:20px;
-border-radius:14px;
+border-radius:12px;
 box-shadow:0 8px 20px rgba(0,0,0,0.08);
 transition:0.3s;
 }
 
 .book-card:hover{
 transform:translateY(-5px);
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
 .book-card h4{
-margin-bottom:6px;
+margin-bottom:5px;
 }
 
 .book-card p{
 font-size:14px;
-color:#555;
+color:#666;
 }
 
 .book-card button{
+margin-top:10px;
 background:#667eea;
 color:white;
 border:none;
 padding:7px 12px;
-border-radius:8px;
+border-radius:6px;
 cursor:pointer;
-margin-top:12px;
-font-size:13px;
 }
 
 /* DUES */
 
 .dues{
-margin-top:40px;
+margin-top:35px;
 background:white;
 padding:18px;
-border-radius:12px;
+border-radius:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 font-weight:600;
-}
-
-.dues span{
-color:#e63946;
 }
 
 </style>
@@ -130,10 +121,9 @@ color:#e63946;
 <body>
 
 <div class="navbar">
-<h2>📚 Student Dashboard</h2>
+<h2>📚 Student Portal</h2>
 <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
-
 
 <div class="container">
 
@@ -149,19 +139,13 @@ Total Dues: ₹ <span id="duesAmount">0</span>
 
 </div>
 
-
 <script>
 
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 let books=[];
 
-
-/* LOAD BOOKS */
-
 async function loadBooks(){
-
-try{
 
 const res=await fetch(`${BASE_URL}/books`);
 const data=await res.json();
@@ -170,25 +154,13 @@ books=data.books;
 
 displayBooks(books);
 
-}catch(err){
-console.log(err);
 }
-
-}
-
-
-/* DISPLAY BOOKS */
 
 function displayBooks(bookArray){
 
 const bookList=document.getElementById("bookList");
 
 bookList.innerHTML="";
-
-if(bookArray.length===0){
-bookList.innerHTML="<p>No books available right now.</p>";
-return;
-}
 
 bookArray.forEach(book=>{
 
@@ -197,20 +169,14 @@ const div=document.createElement("div");
 div.className="book-card";
 
 div.innerHTML=`
-
 <h4>${book.title}</h4>
-
 <p>Author: ${book.author}</p>
-
 <p>Available: ${book.quantity}</p>
 
 <button onclick="issueBook('${book._id}')"
 ${book.quantity<=0?'disabled':''}>
-
 Issue Book
-
 </button>
-
 `;
 
 bookList.appendChild(div);
@@ -219,60 +185,32 @@ bookList.appendChild(div);
 
 }
 
-
-/* ISSUE BOOK */
-
 async function issueBook(bookId){
 
 const username = localStorage.getItem("username");
 
-try{
-
 const res=await fetch(`${BASE_URL}/issues/issue`,{
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-bookId,
-username
-})
-
+headers:{ "Content-Type":"application/json" },
+body:JSON.stringify({ bookId, username })
 });
 
 const data=await res.json();
 
 if(data.success){
-
-alert("Book issued successfully!");
-
+alert("Book issued!");
 loadBooks();
-
 }else{
-
 alert(data.message);
-
-}
-
-}catch(err){
-
-alert("Server error");
-
 }
 
 }
-
-
-/* SEARCH */
 
 function searchBooks(){
 
 const searchValue=document.getElementById("search").value.toLowerCase();
 
-const filtered=books.filter(book=>
+const filtered=books.filter(book =>
 book.title.toLowerCase().includes(searchValue)
 );
 
@@ -280,19 +218,9 @@ displayBooks(filtered);
 
 }
 
-
-/* LOGOUT */
-
 function logout(){
-
-localStorage.removeItem("token");
-
 window.location.href="index.html";
-
 }
-
-
-/* START */
 
 loadBooks();
 
