@@ -12,7 +12,9 @@
 
 </head>
 
-<body>
+<body class="login-page">
+
+<div class="overlay">
 
 <div class="header">
 
@@ -56,12 +58,14 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 </div>
 
+</div>
+
 
 <script>
 
 document.getElementById("loginForm").addEventListener("submit", function(e){
 
-e.preventDefault(); // stop page reload
+e.preventDefault();
 
 let role = document.getElementById("role").value;
 let id = document.getElementById("systemId").value;
@@ -73,11 +77,11 @@ return;
 }
 
 if(role === "student"){
-window.location.href = "student.html";
+window.location.href="student.html";
 }
 
 if(role === "librarian"){
-window.location.href = "librarian.html";
+window.location.href="librarian.html";
 }
 
 });
