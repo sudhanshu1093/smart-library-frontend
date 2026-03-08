@@ -142,19 +142,60 @@ margin:20px 0;
 /* INPUT */
 
 .field{
-
 width:100%;
-
 padding:12px;
-
 margin:10px 0;
-
 border-radius:8px;
-
 border:1px solid #ccc;
-
 font-size:14px;
+}
 
+/* nav bar*/
+.navbar{
+
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+
+padding:15px 30px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo{
+width:40px;
+}
+
+.logout-btn{
+
+background:white;
+color:#667eea;
+
+border:none;
+padding:8px 18px;
+
+border-radius:20px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:0.3s;
+
+}
+
+.logout-btn:hover{
+transform:scale(1.05);
 }
 
 
@@ -204,16 +245,72 @@ color:#2f59c6;
 }
 
 
-/* MOBILE */
+/* MOBILE RESPONSIVE */
 
-@media(max-width:480px){
+@media (max-width:768px){
 
-.login-card{
-width:90%;
+.navbar{
+flex-direction:column;
+gap:10px;
+text-align:center;
+}
+
+.nav-left{
+justify-content:center;
 }
 
 .logo{
-width:170px;
+width:35px;
+}
+
+.container{
+padding:20px;
+}
+
+.search-box input{
+font-size:14px;
+padding:10px;
+}
+
+.books{
+grid-template-columns:1fr;
+}
+
+.book-card{
+padding:18px;
+}
+
+.logout-btn{
+padding:6px 14px;
+}
+
+}
+
+@media (max-width:480px){
+
+.navbar h2{
+font-size:18px;
+}
+
+.logo{
+width:30px;
+}
+
+.container{
+padding:15px;
+}
+
+.book-card h4{
+font-size:15px;
+}
+
+.book-card p{
+font-size:13px;
+}
+
+.book-card button{
+width:100%;
+padding:8px;
 }
 
 }

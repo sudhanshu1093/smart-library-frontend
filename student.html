@@ -3,7 +3,7 @@
 
 <head>
 
-<title>Student Dashboard</title>
+<title>Student Portal</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,29 +21,22 @@ font-family:'Poppins',sans-serif;
 /* BACKGROUND */
 
 body{
-
 background:url("background.jpg") center/cover no-repeat fixed;
 height:100vh;
-
 }
 
-/* BLUR OVERLAY */
+/* BLUR EFFECT */
 
 body::before{
-
 content:"";
 position:fixed;
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
 background:rgba(255,255,255,0.35);
 backdrop-filter:blur(8px);
-
 z-index:-1;
-
 }
 
 /* NAVBAR */
@@ -64,6 +57,16 @@ box-shadow:0 5px 15px rgba(0,0,0,0.2);
 
 }
 
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo{
+width:40px;
+}
+
 .logout-btn{
 
 background:white;
@@ -81,7 +84,7 @@ font-weight:600;
 
 }
 
-/* CONTAINER */
+/* MAIN CONTAINER */
 
 .container{
 
@@ -93,7 +96,7 @@ padding:35px;
 
 }
 
-/* SEARCH BAR */
+/* SEARCH */
 
 .search-box input{
 
@@ -142,28 +145,19 @@ transition:0.3s;
 }
 
 .book-card:hover{
-
 transform:translateY(-5px);
-
 }
 
-/* BOOK TEXT */
-
 .book-card h4{
-
 margin-bottom:6px;
-
 }
 
 .book-card p{
-
 font-size:14px;
-
 color:#555;
-
 }
 
-/* ISSUE BUTTON */
+/* BUTTON */
 
 .book-card button{
 
@@ -183,7 +177,7 @@ cursor:pointer;
 
 }
 
-/* DUES */
+/* DUES BOX */
 
 .dues{
 
@@ -205,11 +199,20 @@ font-weight:600;
 
 </head>
 
+
 <body>
+
+<!-- NAVBAR -->
 
 <div class="navbar">
 
-<h2>📚 Student Portal</h2>
+<div class="nav-left">
+
+<img src="logo.png" class="logo">
+
+<h2>Student Portal</h2>
+
+</div>
 
 <button class="logout-btn" onclick="logout()">Logout</button>
 
@@ -240,7 +243,6 @@ Total Dues: ₹ <span id="duesAmount">0</span>
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 let books=[];
-
 
 /* LOAD BOOKS */
 
@@ -355,7 +357,7 @@ alert("Server error");
 }
 
 
-/* SEARCH BOOK */
+/* SEARCH */
 
 function searchBooks(){
 
