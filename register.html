@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <title>Register</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="header">
-
-<img src="logo.png" class="logo">
-
-<p class="tagline">
-THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
-</p>
-
-</div>
-
-
 <div class="center-box">
 
 <div class="login-card">
 
-<div class="icon-circle">
-
-<img src="earth.png" class="earth">
-<img src="people.png" class="people">
-
-</div>
-
 <h2>Register</h2>
 
-<select class="field">
-<option>Select Role</option>
-<option>Student</option>
-<option>Librarian</option>
+<select class="field" id="role">
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
 </select>
 
-<input class="field" type="text" placeholder="System ID">
+<input class="field" id="username" placeholder="Username">
 
-<input class="field" type="password" placeholder="Password">
+<input class="field" id="password" type="password" placeholder="Password">
 
-<button class="login-btn">Register</button>
-
-<a class="register" href="index.html">Back to Login</a>
+<button class="login-btn" onclick="register()">Register</button>
 
 </div>
 
 </div>
+
+<script>
+
+const BASE_URL="https://smart-library-backend-3762.onrender.com";
+
+async function register(){
+
+let role=document.getElementById("role").value;
+let username=document.getElementById("username").value;
+let password=document.getElementById("password").value;
+
+const res=await fetch(`${BASE_URL}/register`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+role,
+username,
+password
+})
+
+});
+
+const data=await res.json();
+
+if(data.success){
+alert("Registered");
+window.location="index.html";
+}else{
+alert(data.message);
+}
+
+}
+
+</script>
 
 </body>
 </html>

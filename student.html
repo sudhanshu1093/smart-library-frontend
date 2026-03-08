@@ -2,184 +2,54 @@
 <html>
 <head>
 
-<title>Student Portal</title>
+<title>Student Dashboard</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#f4f6fb;
-}
-
-/* NAVBAR */
-
-.navbar{
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-padding:15px 35px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 15px rgba(0,0,0,0.15);
-}
-
-.logout-btn{
-background:white;
-color:#667eea;
-border:none;
-padding:8px 18px;
-border-radius:20px;
-cursor:pointer;
-font-weight:600;
-}
-
-/* CONTAINER */
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:35px;
-}
-
-/* SEARCH BAR */
-
-.search-box input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:none;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-margin-bottom:25px;
-}
-
-/* BOOK GRID */
-
-.books{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-gap:20px;
-}
-
-/* BOOK CARD */
-
-.book-card{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-transition:0.3s;
-}
-
-.book-card:hover{
-transform:translateY(-5px);
-}
-
-.book-card h4{
-margin-bottom:5px;
-}
-
-.book-card p{
-font-size:14px;
-color:#666;
-}
-
-.book-card button{
-margin-top:10px;
-background:#667eea;
-color:white;
-border:none;
-padding:7px 12px;
-border-radius:6px;
-cursor:pointer;
-}
-
-/* DUES */
-
-.dues{
-margin-top:35px;
-background:white;
-padding:18px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-font-weight:600;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
-<body>
+<body class="blur-bg">
 
 <div class="navbar">
-<h2>📚 Student Portal</h2>
-<button class="logout-btn" onclick="logout()">Logout</button>
+
+<h2>Student Dashboard</h2>
+
+<button onclick="logout()">Logout</button>
+
 </div>
 
 <div class="container">
 
-<div class="search-box">
-<input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
-</div>
-
-<div class="books" id="bookList"></div>
-
-<div class="dues">
-Total Dues: ₹ <span id="duesAmount">0</span>
-</div>
+<div id="bookList"></div>
 
 </div>
 
 <script>
 
-const BASE_URL = "https://smart-library-backend-3762.onrender.com";
-
-let books=[];
+const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
 async function loadBooks(){
 
 const res=await fetch(`${BASE_URL}/books`);
 const data=await res.json();
 
-books=data.books;
+const list=document.getElementById("bookList");
 
-displayBooks(books);
+data.books.forEach(book=>{
 
-}
+list.innerHTML+=`
 
-function displayBooks(bookArray){
+<div class="book-card">
 
-const bookList=document.getElementById("bookList");
-
-bookList.innerHTML="";
-
-bookArray.forEach(book=>{
-
-const div=document.createElement("div");
-
-div.className="book-card";
-
-div.innerHTML=`
 <h4>${book.title}</h4>
-<p>Author: ${book.author}</p>
+<p>${book.author}</p>
 <p>Available: ${book.quantity}</p>
 
-<button onclick="issueBook('${book._id}')"
-${book.quantity<=0?'disabled':''}>
-Issue Book
-</button>
-`;
+<button onclick="issueBook('${book._id}')">Issue</button>
 
-bookList.appendChild(div);
+</div>
+
+`;
 
 });
 
@@ -187,39 +57,32 @@ bookList.appendChild(div);
 
 async function issueBook(bookId){
 
-const username = localStorage.getItem("username");
+const username=localStorage.getItem("username");
 
-const res=await fetch(`${BASE_URL}/issues/issue`,{
+await fetch(`${BASE_URL}/issues/issue`,{
+
 method:"POST",
-headers:{ "Content-Type":"application/json" },
-body:JSON.stringify({ bookId, username })
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+bookId,
+username
+})
+
 });
 
-const data=await res.json();
-
-if(data.success){
-alert("Book issued!");
-loadBooks();
-}else{
-alert(data.message);
-}
-
-}
-
-function searchBooks(){
-
-const searchValue=document.getElementById("search").value.toLowerCase();
-
-const filtered=books.filter(book =>
-book.title.toLowerCase().includes(searchValue)
-);
-
-displayBooks(filtered);
+alert("Book Issued");
 
 }
 
 function logout(){
-window.location.href="index.html";
+
+localStorage.clear();
+window.location="index.html";
+
 }
 
 loadBooks();

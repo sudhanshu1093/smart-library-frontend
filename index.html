@@ -4,11 +4,7 @@
 
 <title>Smart Library Login</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 </head>
 
@@ -18,9 +14,7 @@
 
 <img src="logo.png" class="logo">
 
-<p class="tagline">
-THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
-</p>
+<p class="tagline">THE WORLD IS HERE. WHERE ARE YOU?</p>
 
 </div>
 
@@ -28,7 +22,12 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <div class="login-card">
 
-<h2>Smart Library Login</h2>
+<div class="icon-circle">
+<img src="earth.png" class="earth">
+<img src="people.png" class="people">
+</div>
+
+<h2>Login</h2>
 
 <form id="loginForm">
 
@@ -38,15 +37,15 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 <option value="librarian">Librarian</option>
 </select>
 
-<input class="field" type="text" id="username" placeholder="Username">
+<input class="field" id="username" placeholder="Username">
 
-<input class="field" type="password" id="password" placeholder="Password">
+<input class="field" id="password" type="password" placeholder="Password">
 
-<button class="login-btn">Sign In</button>
+<button class="login-btn">Login</button>
 
 </form>
 
-<a class="register" href="register.html">Register</a>
+<a href="register.html">Register</a>
 
 </div>
 
@@ -63,13 +62,6 @@ e.preventDefault();
 let role=document.getElementById("role").value;
 let username=document.getElementById("username").value;
 let password=document.getElementById("password").value;
-
-if(!role||!username||!password){
-alert("Fill all fields");
-return;
-}
-
-try{
 
 const res=await fetch(`${BASE_URL}/login`,{
 
@@ -94,23 +86,12 @@ if(data.success){
 localStorage.setItem("token",data.token);
 localStorage.setItem("username",username);
 
-if(role==="student"){
-window.location="student.html";
-}
-
-if(role==="librarian"){
-window.location="librarian.html";
-}
+if(role==="student") window.location="student.html";
+if(role==="librarian") window.location="librarian.html";
 
 }else{
 
 alert(data.message);
-
-}
-
-}catch(err){
-
-alert("Server error");
 
 }
 

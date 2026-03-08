@@ -12,7 +12,7 @@ background:url("background.jpg") center/cover no-repeat fixed;
 min-height:100vh;
 }
 
-/* BLUR (ONLY STUDENT + LIBRARIAN) */
+/* BLUR ONLY DASHBOARDS */
 
 .blur-bg::before{
 content:"";
@@ -43,12 +43,7 @@ font-size:18px;
 color:#333;
 }
 
-.tagline span{
-color:#3d7cff;
-font-weight:600;
-}
-
-/* CENTER BOX */
+/* CENTER */
 
 .center-box{
 display:flex;
@@ -60,15 +55,15 @@ height:70vh;
 /* CARD */
 
 .login-card{
-background:rgba(255,255,255,0.9);
+background:white;
 padding:40px;
 width:350px;
 border-radius:15px;
-box-shadow:0 10px 40px rgba(0,0,0,0.25);
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
 text-align:center;
 }
 
-/* ICON */
+/* EARTH ICON */
 
 .icon-circle{
 width:95px;
@@ -97,7 +92,7 @@ from{transform:rotate(0deg);}
 to{transform:rotate(360deg);}
 }
 
-/* FORM */
+/* INPUT */
 
 .field{
 width:100%;
@@ -105,7 +100,6 @@ padding:12px;
 margin:10px 0;
 border-radius:8px;
 border:1px solid #ccc;
-font-size:14px;
 }
 
 /* BUTTON */
@@ -126,13 +120,6 @@ cursor:pointer;
 background:#1e3fa3;
 }
 
-.register{
-display:block;
-margin-top:12px;
-text-decoration:none;
-color:#2f59c6;
-}
-
 /* DASHBOARD */
 
 .navbar{
@@ -141,62 +128,28 @@ color:white;
 padding:15px 30px;
 display:flex;
 justify-content:space-between;
-align-items:center;
 }
 
 .container{
-max-width:1100px;
+max-width:1000px;
 margin:auto;
 padding:30px;
-}
-
-.search-box input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:none;
-margin-bottom:25px;
-}
-
-.books{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:20px;
 }
 
 .book-card{
 background:white;
 padding:20px;
 border-radius:12px;
+margin-bottom:10px;
 box-shadow:0 8px 15px rgba(0,0,0,0.08);
 }
 
 .book-card button{
+margin-top:10px;
 background:#667eea;
 color:white;
 border:none;
 padding:6px 10px;
 border-radius:6px;
 cursor:pointer;
-margin-top:10px;
-}
-
-.dues{
-margin-top:30px;
-background:#fff3cd;
-padding:15px;
-border-radius:10px;
-font-weight:600;
-}
-
-/* MOBILE */
-
-@media(max-width:480px){
-
-.logo{width:180px;}
-
-.login-card{width:90%;}
-
-.books{grid-template-columns:1fr;}
-
 }
