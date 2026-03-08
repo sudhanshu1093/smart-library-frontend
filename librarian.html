@@ -64,11 +64,14 @@ cursor:pointer;
 
 }
 
-/* MAIN */
+/* MAIN CONTENT */
 
 .main{
+
 flex:1;
+
 padding:30px;
+
 }
 
 /* CARD */
@@ -91,7 +94,7 @@ margin-bottom:20px;
 margin-bottom:10px;
 }
 
-/* INPUT */
+/* INPUTS */
 
 input{
 
@@ -107,7 +110,7 @@ border:1px solid #ccc;
 
 }
 
-/* BUTTON */
+/* ADD BUTTON */
 
 .add-btn{
 
@@ -149,7 +152,7 @@ align-items:center;
 
 }
 
-/* MOBILE */
+/* MOBILE RESPONSIVE */
 
 @media(max-width:768px){
 
@@ -159,8 +162,7 @@ flex-direction:column;
 
 .sidebar{
 width:100%;
-display:flex;
-justify-content:center;
+text-align:center;
 }
 
 .main{
@@ -217,6 +219,7 @@ padding:20px;
 
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
+
 async function loadBooks(){
 
 try{
@@ -249,6 +252,8 @@ console.log(err);
 
 }
 
+
+/* ADD BOOK */
 
 async function addBook(){
 
@@ -311,15 +316,21 @@ alert("Server error");
 }
 
 
+/* LOGOUT */
+
 function logout(){
 
 window.location.href="index.html";
 
 }
 
+
+/* START */
+
 loadBooks();
 
 </script>
 
 </body>
+
 </html>
