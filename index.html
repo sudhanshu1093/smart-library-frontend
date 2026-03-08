@@ -29,12 +29,14 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <div class="icon-circle">
 
-<img src="earth.png" class="earth">
+<img src="earth.webp" class="earth">
 <img src="people.png" class="people">
 
 </div>
 
 <h2>Smart Library Login</h2>
+
+<form id="loginForm">
 
 <select class="field" id="role">
 <option value="">Select Role</option>
@@ -46,7 +48,9 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <input class="field" type="password" id="password" placeholder="Password">
 
-<button type="button" class="login-btn" onclick="login()">Sign In</button>
+<button class="login-btn" type="submit">Sign In</button>
+
+</form>
 
 <a class="register" href="register.html">Register</a>
 
@@ -55,7 +59,9 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <script>
 
-function login(){
+document.getElementById("loginForm").addEventListener("submit", function(e){
+
+e.preventDefault(); // stop page reload
 
 let role = document.getElementById("role").value;
 let id = document.getElementById("systemId").value;
@@ -74,7 +80,7 @@ if(role === "librarian"){
 window.location.href = "librarian.html";
 }
 
-}
+});
 
 </script>
 
