@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Librarian</title>
+<title>Librarian Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -12,9 +12,12 @@
 
 <div class="navbar">
 
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:40px;">
 <h2>Librarian Dashboard</h2>
+</div>
 
-<button onclick="logout()">Logout</button>
+<button onclick="logout()" class="login-btn" style="width:120px;height:35px;padding:0;">Logout</button>
 
 </div>
 
@@ -30,11 +33,46 @@
 
 <button class="login-btn" onclick="addBook()">Add Book</button>
 
+<br><br>
+
+<h3>Books in Library</h3>
+
+<div id="bookList"></div>
+
 </div>
 
 <script>
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
+
+async function loadBooks(){
+
+const res=await fetch(`${BASE_URL}/books`);
+const data=await res.json();
+
+const list=document.getElementById("bookList");
+
+list.innerHTML="";
+
+data.books.forEach(book=>{
+
+list.innerHTML+=`
+
+<div class="book-card">
+
+<h4>${book.title}</h4>
+
+<p>${book.author}</p>
+
+<p>Quantity: ${book.quantity}</p>
+
+</div>
+
+`;
+
+});
+
+}
 
 async function addBook(){
 
@@ -60,6 +98,8 @@ quantity
 
 alert("Book Added");
 
+loadBooks();
+
 }
 
 function logout(){
@@ -68,6 +108,8 @@ localStorage.clear();
 window.location="index.html";
 
 }
+
+loadBooks();
 
 </script>
 

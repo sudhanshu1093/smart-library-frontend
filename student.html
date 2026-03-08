@@ -2,25 +2,49 @@
 <html>
 <head>
 
-<title>Student Dashboard</title>
+<title>Register</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body class="blur-bg">
+<body>
 
-<div class="navbar">
+<div class="header">
 
-<h2>Student Dashboard</h2>
+<img src="logo.png" class="logo">
 
-<button onclick="logout()">Logout</button>
+<p class="tagline">THE WORLD IS HERE. WHERE ARE YOU?</p>
 
 </div>
 
-<div class="container">
+<div class="center-box">
 
-<div id="bookList"></div>
+<div class="login-card">
+
+<div class="icon-circle">
+<img src="earth.png" class="earth">
+<img src="people.png" class="people">
+</div>
+
+<h2>Register</h2>
+
+<select class="field" id="role">
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
+</select>
+
+<input class="field" id="username" placeholder="Username">
+
+<input class="field" id="password" type="password" placeholder="Password">
+
+<button class="login-btn" onclick="register()">Register</button>
+
+<br><br>
+
+<a href="index.html">Back to Login</a>
+
+</div>
 
 </div>
 
@@ -28,38 +52,13 @@
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
-async function loadBooks(){
+async function register(){
 
-const res=await fetch(`${BASE_URL}/books`);
-const data=await res.json();
+let role=document.getElementById("role").value;
+let username=document.getElementById("username").value;
+let password=document.getElementById("password").value;
 
-const list=document.getElementById("bookList");
-
-data.books.forEach(book=>{
-
-list.innerHTML+=`
-
-<div class="book-card">
-
-<h4>${book.title}</h4>
-<p>${book.author}</p>
-<p>Available: ${book.quantity}</p>
-
-<button onclick="issueBook('${book._id}')">Issue</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-async function issueBook(bookId){
-
-const username=localStorage.getItem("username");
-
-await fetch(`${BASE_URL}/issues/issue`,{
+const res=await fetch(`${BASE_URL}/register`,{
 
 method:"POST",
 
@@ -68,24 +67,23 @@ headers:{
 },
 
 body:JSON.stringify({
-bookId,
-username
+role,
+username,
+password
 })
 
 });
 
-alert("Book Issued");
+const data=await res.json();
 
-}
-
-function logout(){
-
-localStorage.clear();
+if(data.success){
+alert("Registered Successfully");
 window.location="index.html";
-
+}else{
+alert(data.message);
 }
 
-loadBooks();
+}
 
 </script>
 

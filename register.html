@@ -10,9 +10,22 @@
 
 <body>
 
+<div class="header">
+
+<img src="logo.png" class="logo">
+
+<p class="tagline">THE WORLD IS HERE. WHERE ARE YOU?</p>
+
+</div>
+
 <div class="center-box">
 
 <div class="login-card">
+
+<div class="icon-circle">
+<img src="earth.png" class="earth">
+<img src="people.png" class="people">
+</div>
 
 <h2>Register</h2>
 
@@ -26,6 +39,10 @@
 <input class="field" id="password" type="password" placeholder="Password">
 
 <button class="login-btn" onclick="register()">Register</button>
+
+<br><br>
+
+<a href="index.html">Back to Login</a>
 
 </div>
 
@@ -60,7 +77,7 @@ password
 const data=await res.json();
 
 if(data.success){
-alert("Registered");
+alert("Registered Successfully");
 window.location="index.html";
 }else{
 alert(data.message);
