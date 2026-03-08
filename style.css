@@ -76,22 +76,27 @@ text-align:center;
 /* ICON CIRCLE */
 
 .icon-circle{
-
 width:95px;
 height:95px;
-
 border-radius:50%;
-
 margin:auto;
-
 position:relative;
-
 background:white;
+}
 
-box-shadow:
-0 0 0 4px white,
-0 0 20px rgba(0,0,0,0.25);
+.earth{
+width:95px;
+position:absolute;
+top:0;
+left:0;
+animation:spin 6s linear infinite;
+}
 
+.people{
+width:60px;
+position:absolute;
+top:18px;
+left:18px;
 }
 
 
