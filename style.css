@@ -1,13 +1,22 @@
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+/* BODY BACKGROUND */
+
 body{
 
-margin:0;
-font-family:'Poppins',sans-serif;
+height:100vh;
 
 background-image:url("background.jpg");
+
 background-size:cover;
 background-position:center;
-
-height:100vh;
 
 display:flex;
 flex-direction:column;
@@ -15,12 +24,13 @@ align-items:center;
 
 }
 
+
 /* HEADER */
 
 .header{
 
 text-align:center;
-margin-top:30px;
+margin-top:35px;
 
 }
 
@@ -30,7 +40,7 @@ width:220px;
 
 .tagline{
 
-margin-top:5px;
+margin-top:8px;
 font-size:18px;
 color:#333;
 
@@ -41,46 +51,56 @@ color:#3d7cff;
 font-weight:600;
 }
 
+
 /* LOGIN CARD */
 
 .login-card{
 
-margin-top:40px;
+margin-top:45px;
 
 background:rgba(255,255,255,0.9);
 
-padding:40px;
+padding:40px 35px;
 
-width:340px;
+width:350px;
 
 border-radius:15px;
 
-box-shadow:0 10px 40px rgba(0,0,0,0.3);
+box-shadow:0 10px 40px rgba(0,0,0,0.25);
 
 text-align:center;
 
 }
 
+
 /* ICON CIRCLE */
 
 .icon-circle{
 
-width:90px;
-height:90px;
-
-margin:auto;
+width:95px;
+height:95px;
 
 border-radius:50%;
 
+margin:auto;
+
 position:relative;
+
+background:white;
+
+box-shadow:
+0 0 0 4px white,
+0 0 20px rgba(0,0,0,0.25);
 
 }
 
-/* EARTH */
+
+/* ROTATING EARTH */
 
 .earth{
 
-width:90px;
+width:95px;
+
 position:absolute;
 top:0;
 left:0;
@@ -89,7 +109,8 @@ animation:spin 8s linear infinite;
 
 }
 
-/* PEOPLE */
+
+/* PEOPLE ICON */
 
 .people{
 
@@ -97,21 +118,39 @@ width:60px;
 
 position:absolute;
 
-top:15px;
-left:15px;
+top:18px;
+left:18px;
 
 }
 
-/* ROTATION */
+
+/* EARTH ROTATION */
 
 @keyframes spin{
 
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
 
 }
 
-/* FORM FIELDS */
+
+/* TITLE */
+
+.login-card h2{
+
+margin:20px 0;
+
+font-weight:600;
+
+}
+
+
+/* INPUT FIELDS */
 
 .field{
 
@@ -127,9 +166,10 @@ border:1px solid #ccc;
 
 font-size:14px;
 
-box-sizing:border-box;
+outline:none;
 
 }
+
 
 /* BUTTON */
 
@@ -138,6 +178,8 @@ box-sizing:border-box;
 width:100%;
 
 padding:12px;
+
+margin-top:10px;
 
 background:#2f59c6;
 
@@ -151,13 +193,16 @@ font-weight:600;
 
 cursor:pointer;
 
-margin-top:10px;
+transition:0.3s;
 
 }
 
 .login-btn:hover{
-background:#1d3ea3;
+
+background:#1e3fa3;
+
 }
+
 
 /* REGISTER LINK */
 
@@ -167,24 +212,30 @@ display:block;
 
 margin-top:12px;
 
+font-size:14px;
+
 text-decoration:none;
 
 color:#2f59c6;
 
-font-size:14px;
-
 }
 
-/* MOBILE */
+
+/* MOBILE RESPONSIVE */
 
 @media(max-width:480px){
 
 .login-card{
 width:90%;
+padding:30px;
 }
 
 .logo{
 width:180px;
+}
+
+.tagline{
+font-size:16px;
 }
 
 }
