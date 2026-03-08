@@ -60,12 +60,14 @@ box-shadow:0 5px 15px rgba(0,0,0,0.2);
 .nav-left{
 display:flex;
 align-items:center;
-gap:10px;
+gap:12px;
 }
 
 .logo{
 width:40px;
 }
+
+/* LOGOUT */
 
 .logout-btn{
 
@@ -96,7 +98,7 @@ padding:35px;
 
 }
 
-/* SEARCH */
+/* SEARCH BAR */
 
 .search-box input{
 
@@ -157,7 +159,7 @@ font-size:14px;
 color:#555;
 }
 
-/* BUTTON */
+/* ISSUE BUTTON */
 
 .book-card button{
 
@@ -177,7 +179,7 @@ cursor:pointer;
 
 }
 
-/* DUES BOX */
+/* DUES */
 
 .dues{
 
@@ -195,14 +197,52 @@ font-weight:600;
 
 }
 
+/* MOBILE RESPONSIVE */
+
+@media (max-width:768px){
+
+.container{
+padding:20px;
+}
+
+.books{
+grid-template-columns:1fr 1fr;
+}
+
+.logo{
+width:45px;
+}
+
+}
+
+@media (max-width:480px){
+
+.navbar{
+flex-direction:column;
+gap:10px;
+text-align:center;
+}
+
+.books{
+grid-template-columns:1fr;
+}
+
+.logo{
+width:55px;
+}
+
+.logout-btn{
+padding:6px 14px;
+}
+
+}
+
 </style>
 
 </head>
 
 
 <body>
-
-<!-- NAVBAR -->
 
 <div class="navbar">
 
@@ -243,6 +283,7 @@ Total Dues: ₹ <span id="duesAmount">0</span>
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 let books=[];
+
 
 /* LOAD BOOKS */
 

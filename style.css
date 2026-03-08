@@ -1,3 +1,5 @@
+/* RESET */
+
 *{
 margin:0;
 padding:0;
@@ -5,155 +7,36 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
+
 /* BACKGROUND */
 
 body{
-
-height:100vh;
-
-background-image:url("background.jpg");
-
-background-size:cover;
-background-position:center;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-
+background:url("background.jpg") center/cover no-repeat fixed;
+min-height:100vh;
 }
 
 
-/* HEADER */
+/* BLUR EFFECT */
 
-.header{
-
-text-align:center;
-margin-top:30px;
-
-}
-
-.logo{
-width:220px;
-}
-
-.tagline{
-
-margin-top:8px;
-font-size:18px;
-color:#333;
-
-}
-
-.tagline span{
-color:#3d7cff;
-font-weight:600;
-}
-
-
-/* LOGIN CARD */
-
-.login-card{
-
-margin-top:40px;
-
-background:rgba(255,255,255,0.9);
-
-padding:40px;
-
-width:350px;
-
-border-radius:15px;
-
-box-shadow:0 10px 40px rgba(0,0,0,0.25);
-
-text-align:center;
-
-}
-
-
-/* ICON CIRCLE */
-
-.icon-circle{
-
-width:95px;
-height:95px;
-
-border-radius:50%;
-
-margin:auto;
-
-position:relative;
-
-background:white;
-
-box-shadow:0 0 20px rgba(0,0,0,0.2);
-
-}
-
-
-/* EARTH */
-
-.earth{
-
-width:95px;
-
-position:absolute;
+body::before{
+content:"";
+position:fixed;
 top:0;
 left:0;
-
-animation:spin 8s linear infinite;
-
-}
-
-
-/* PEOPLE */
-
-.people{
-
-width:60px;
-
-position:absolute;
-
-top:18px;
-left:18px;
-
-}
-
-
-/* ROTATION */
-
-@keyframes spin{
-
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-
-}
-
-
-/* TITLE */
-
-.login-card h2{
-
-margin:20px 0;
-
-}
-
-
-/* INPUT */
-
-.field{
 width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ccc;
-font-size:14px;
+height:100%;
+background:rgba(255,255,255,0.35);
+backdrop-filter:blur(8px);
+z-index:-1;
 }
 
-/* nav bar*/
+
+/* NAVBAR */
+
 .navbar{
 
 background:linear-gradient(135deg,#667eea,#764ba2);
+
 color:white;
 
 padding:15px 30px;
@@ -166,15 +49,24 @@ box-shadow:0 5px 15px rgba(0,0,0,0.2);
 
 }
 
+
+/* NAV LEFT */
+
 .nav-left{
 display:flex;
 align-items:center;
 gap:12px;
 }
 
+
+/* LOGO */
+
 .logo{
 width:40px;
 }
+
+
+/* LOGOUT BUTTON */
 
 .logout-btn{
 
@@ -182,6 +74,7 @@ background:white;
 color:#667eea;
 
 border:none;
+
 padding:8px 18px;
 
 border-radius:20px;
@@ -199,48 +92,128 @@ transform:scale(1.05);
 }
 
 
-/* BUTTON */
+/* MAIN CONTAINER */
 
-.login-btn{
+.container{
+
+max-width:1100px;
+
+margin:auto;
+
+padding:35px;
+
+}
+
+
+/* SEARCH */
+
+.search-box input{
 
 width:100%;
 
 padding:12px;
 
-background:#2f59c6;
+border-radius:10px;
 
 border:none;
 
-border-radius:8px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
 
-color:white;
-
-font-weight:600;
-
-cursor:pointer;
-
-}
-
-.login-btn:hover{
-
-background:#1d3ea3;
-
-}
-
-
-/* REGISTER LINK */
-
-.register{
-
-display:block;
-
-margin-top:12px;
+margin-bottom:25px;
 
 font-size:14px;
 
-text-decoration:none;
+}
 
-color:#2f59c6;
+
+/* BOOK GRID */
+
+.books{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+
+gap:20px;
+
+}
+
+
+/* BOOK CARD */
+
+.book-card{
+
+background:rgba(255,255,255,0.95);
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
+transition:0.3s;
+
+}
+
+.book-card:hover{
+transform:translateY(-5px);
+}
+
+
+/* BOOK TEXT */
+
+.book-card h4{
+margin-bottom:6px;
+}
+
+.book-card p{
+font-size:14px;
+color:#555;
+}
+
+
+/* ISSUE BUTTON */
+
+.book-card button{
+
+margin-top:10px;
+
+background:#3d63d2;
+
+color:white;
+
+border:none;
+
+padding:8px 14px;
+
+border-radius:6px;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.book-card button:hover{
+background:#2c4db0;
+}
+
+
+/* DUES BOX */
+
+.dues{
+
+margin-top:35px;
+
+background:rgba(255,255,255,0.95);
+
+padding:15px;
+
+border-radius:12px;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+font-weight:600;
 
 }
 
@@ -249,68 +222,39 @@ color:#2f59c6;
 
 @media (max-width:768px){
 
+.container{
+padding:20px;
+}
+
+.books{
+grid-template-columns:1fr 1fr;
+}
+
+.logo{
+width:45px;
+}
+
+}
+
+
+@media (max-width:480px){
+
 .navbar{
 flex-direction:column;
 gap:10px;
 text-align:center;
 }
 
-.nav-left{
-justify-content:center;
-}
-
-.logo{
-width:35px;
-}
-
-.container{
-padding:20px;
-}
-
-.search-box input{
-font-size:14px;
-padding:10px;
-}
-
 .books{
 grid-template-columns:1fr;
 }
 
-.book-card{
-padding:18px;
+.logo{
+width:55px;
 }
 
 .logout-btn{
 padding:6px 14px;
-}
-
-}
-
-@media (max-width:480px){
-
-.navbar h2{
-font-size:18px;
-}
-
-.logo{
-width:30px;
-}
-
-.container{
-padding:15px;
-}
-
-.book-card h4{
-font-size:15px;
-}
-
-.book-card p{
-font-size:13px;
-}
-
-.book-card button{
-width:100%;
-padding:8px;
 }
 
 }
