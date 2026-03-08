@@ -36,21 +36,47 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 <h2>Smart Library Login</h2>
 
-<select class="field">
-<option>Select Role</option>
-<option>Student</option>
-<option>Librarian</option>
+<select class="field" id="role">
+<option value="">Select Role</option>
+<option value="student">Student</option>
+<option value="librarian">Librarian</option>
 </select>
 
-<input class="field" type="text" placeholder="System ID">
+<input class="field" type="text" id="systemId" placeholder="System ID">
 
-<input class="field" type="password" placeholder="Password">
+<input class="field" type="password" id="password" placeholder="Password">
 
-<button class="login-btn">Sign In</button>
+<button class="login-btn" onclick="login()">Sign In</button>
 
 <a class="register" href="register.html">Register</a>
 
 </div>
+
+
+<script>
+
+function login(){
+
+let role = document.getElementById("role").value;
+let id = document.getElementById("systemId").value;
+let pass = document.getElementById("password").value;
+
+if(role === "" || id === "" || pass === ""){
+alert("Please fill all fields");
+return;
+}
+
+if(role === "student"){
+window.location.href = "student.html";
+}
+
+if(role === "librarian"){
+window.location.href = "librarian.html";
+}
+
+}
+
+</script>
 
 </body>
 </html>
