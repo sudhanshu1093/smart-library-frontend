@@ -18,10 +18,64 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
+/* BACKGROUND */
+
 body{
-display:flex;
+background:url("background.jpg") center/cover no-repeat fixed;
 min-height:100vh;
-background:#f4f6fb;
+}
+
+/* NAVBAR */
+
+.navbar{
+
+background:linear-gradient(135deg,#667eea,#764ba2);
+
+color:white;
+
+padding:15px 30px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo{
+width:40px;
+}
+
+/* LOGOUT */
+
+.logout-btn{
+
+background:white;
+color:#667eea;
+
+border:none;
+
+padding:8px 18px;
+
+border-radius:20px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+/* LAYOUT */
+
+.wrapper{
+display:flex;
 }
 
 /* SIDEBAR */
@@ -30,7 +84,7 @@ background:#f4f6fb;
 
 width:220px;
 
-background:linear-gradient(135deg,#667eea,#764ba2);
+background:rgba(102,126,234,0.9);
 
 color:white;
 
@@ -38,33 +92,11 @@ padding:25px 15px;
 
 }
 
-.sidebar h2{
-margin-bottom:30px;
+.sidebar h3{
+margin-bottom:20px;
 }
 
-.sidebar button{
-
-width:100%;
-
-padding:10px;
-
-margin:10px 0;
-
-border:none;
-
-border-radius:8px;
-
-background:white;
-
-color:#667eea;
-
-font-weight:600;
-
-cursor:pointer;
-
-}
-
-/* MAIN CONTENT */
+/* MAIN */
 
 .main{
 
@@ -94,7 +126,7 @@ margin-bottom:20px;
 margin-bottom:10px;
 }
 
-/* INPUTS */
+/* INPUT */
 
 input{
 
@@ -152,11 +184,11 @@ align-items:center;
 
 }
 
-/* MOBILE RESPONSIVE */
+/* MOBILE */
 
 @media(max-width:768px){
 
-body{
+.wrapper{
 flex-direction:column;
 }
 
@@ -169,20 +201,43 @@ text-align:center;
 padding:20px;
 }
 
+.logo{
+width:45px;
+}
+
 }
 
 </style>
 
 </head>
 
-
 <body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+<div class="nav-left">
+
+<img src="logo.png" class="logo">
+
+<h2>Librarian Portal</h2>
+
+</div>
+
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+</div>
+
+
+<div class="wrapper">
 
 <div class="sidebar">
 
-<h2>📚 Librarian</h2>
+<h3>📚 Menu</h3>
 
-<button onclick="logout()">Logout</button>
+<p>Add Books</p>
+<p>All Books</p>
 
 </div>
 
@@ -214,18 +269,17 @@ padding:20px;
 
 </div>
 
+</div>
+
 
 <script>
 
-const BASE_URL = "https://smart-library-backend-3762.onrender.com";
-
+const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
 async function loadBooks(){
 
-try{
-
-const res = await fetch(`${BASE_URL}/books`);
-const data = await res.json();
+const res=await fetch(`${BASE_URL}/books`);
+const data=await res.json();
 
 const list=document.getElementById("bookList");
 const total=document.getElementById("totalBooks");
@@ -235,7 +289,7 @@ total.innerText=data.books.length;
 
 data.books.forEach(book=>{
 
-list.innerHTML += `
+list.innerHTML+=`
 <div>
 <b>${book.title}</b> by ${book.author}
 <span>Qty: ${book.quantity}</span>
@@ -244,16 +298,7 @@ list.innerHTML += `
 
 });
 
-}catch(err){
-
-console.log(err);
-
 }
-
-}
-
-
-/* ADD BOOK */
 
 async function addBook(){
 
@@ -261,19 +306,12 @@ const title=document.getElementById("bookName").value.trim();
 const author=document.getElementById("authorname").value.trim();
 const quantity=Number(document.getElementById("bookQty").value);
 
-if(!title || !author || !quantity){
+if(!title||!author||!quantity){
 alert("Fill all fields");
 return;
 }
 
-if(quantity<1){
-alert("Quantity must be greater than 0");
-return;
-}
-
-try{
-
-const res = await fetch(`${BASE_URL}/books`,{
+const res=await fetch(`${BASE_URL}/books`,{
 
 method:"POST",
 
@@ -289,11 +327,11 @@ quantity
 
 });
 
-const data = await res.json();
+const data=await res.json();
 
 if(data.success){
 
-alert("Book added successfully");
+alert("Book added");
 
 document.getElementById("bookName").value="";
 document.getElementById("authorname").value="";
@@ -301,36 +339,17 @@ document.getElementById("bookQty").value="";
 
 loadBooks();
 
-}else{
-
-alert(data.message);
-
-}
-
-}catch(err){
-
-alert("Server error");
-
 }
 
 }
-
-
-/* LOGOUT */
 
 function logout(){
-
 window.location.href="index.html";
-
 }
-
-
-/* START */
 
 loadBooks();
 
 </script>
 
 </body>
-
 </html>
