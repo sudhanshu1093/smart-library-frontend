@@ -1,433 +1,56 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
-<title>Student Portal</title>
+<title>Student Dashboard</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-/* BACKGROUND */
-
-body{
-background:url("background.jpg") center/cover no-repeat fixed;
-height:100vh;
-}
-
-/* BLUR EFFECT */
-
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(255,255,255,0.35);
-backdrop-filter:blur(8px);
-z-index:-1;
-}
-
-/* NAVBAR */
-
-.navbar{
-
-background:linear-gradient(135deg,#667eea,#764ba2);
-
-color:white;
-
-padding:15px 30px;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-
-}
-
-.nav-left{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo{
-width:40px;
-}
-
-/* LOGOUT */
-
-.logout-btn{
-
-background:white;
-color:#667eea;
-
-border:none;
-
-padding:8px 18px;
-
-border-radius:20px;
-
-cursor:pointer;
-
-font-weight:600;
-
-}
-
-/* MAIN CONTAINER */
-
-.container{
-
-max-width:1100px;
-
-margin:auto;
-
-padding:35px;
-
-}
-
-/* SEARCH BAR */
-
-.search-box input{
-
-width:100%;
-
-padding:12px;
-
-border-radius:10px;
-
-border:none;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.15);
-
-margin-bottom:25px;
-
-font-size:14px;
-
-}
-
-/* BOOK GRID */
-
-.books{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-
-gap:20px;
-
-}
-
-/* BOOK CARD */
-
-.book-card{
-
-background:rgba(255,255,255,0.95);
-
-padding:20px;
-
-border-radius:15px;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-
-transition:0.3s;
-
-}
-
-.book-card:hover{
-transform:translateY(-5px);
-}
-
-.book-card h4{
-margin-bottom:6px;
-}
-
-.book-card p{
-font-size:14px;
-color:#555;
-}
-
-/* ISSUE BUTTON */
-
-.book-card button{
-
-margin-top:10px;
-
-background:#3d63d2;
-
-color:white;
-
-border:none;
-
-padding:8px 14px;
-
-border-radius:6px;
-
-cursor:pointer;
-
-}
-
-/* DUES */
-
-.dues{
-
-margin-top:35px;
-
-background:rgba(255,255,255,0.95);
-
-padding:15px;
-
-border-radius:12px;
-
-box-shadow:0 8px 20px rgba(0,0,0,0.15);
-
-font-weight:600;
-
-}
-
-/* MOBILE RESPONSIVE */
-
-@media (max-width:768px){
-
-.container{
-padding:20px;
-}
-
-.books{
-grid-template-columns:1fr 1fr;
-}
-
-.logo{
-width:45px;
-}
-
-}
-
-@media (max-width:480px){
-
-.navbar{
-flex-direction:column;
-gap:10px;
-text-align:center;
-}
-
-.books{
-grid-template-columns:1fr;
-}
-
-.logo{
-width:55px;
-}
-
-.logout-btn{
-padding:6px 14px;
-}
-
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
-
-<body>
+<body class="blur-bg">
 
 <div class="navbar">
 
-<div class="nav-left">
+<h2>📚 Student Dashboard</h2>
 
-<img src="logo.png" class="logo">
-
-<h2>Student Portal</h2>
+<button onclick="logout()">Logout</button>
 
 </div>
-
-<button class="logout-btn" onclick="logout()">Logout</button>
-
-</div>
-
 
 <div class="container">
 
 <div class="search-box">
 
-<input type="text" id="search" placeholder="Search books..." onkeyup="searchBooks()">
+<input type="text" placeholder="Search books">
 
 </div>
 
-<div class="books" id="bookList"></div>
+<div class="books">
+
+<div class="book-card">
+<h4>Book Example</h4>
+<p>Author: Demo</p>
+<button>Issue</button>
+</div>
+
+</div>
 
 <div class="dues">
-
-Total Dues: ₹ <span id="duesAmount">0</span>
-
+Total Dues: ₹0
 </div>
 
 </div>
-
 
 <script>
 
-const BASE_URL = "https://smart-library-backend-3762.onrender.com";
-
-let books=[];
-
-
-/* LOAD BOOKS */
-
-async function loadBooks(){
-
-try{
-
-const res=await fetch(`${BASE_URL}/books`);
-const data=await res.json();
-
-books=data.books;
-
-displayBooks(books);
-
-}catch(err){
-
-console.log(err);
-
-}
-
-}
-
-
-/* DISPLAY BOOKS */
-
-function displayBooks(bookArray){
-
-const bookList=document.getElementById("bookList");
-
-bookList.innerHTML="";
-
-if(bookArray.length===0){
-
-bookList.innerHTML="<p>No books available right now.</p>";
-return;
-
-}
-
-bookArray.forEach(book=>{
-
-const div=document.createElement("div");
-
-div.className="book-card";
-
-div.innerHTML=`
-
-<h4>${book.title}</h4>
-
-<p>Author: ${book.author}</p>
-
-<p>Available: ${book.quantity}</p>
-
-<button onclick="issueBook('${book._id}')"
-${book.quantity<=0?'disabled':''}>
-
-Issue Book
-
-</button>
-
-`;
-
-bookList.appendChild(div);
-
-});
-
-}
-
-
-/* ISSUE BOOK */
-
-async function issueBook(bookId){
-
-const username = localStorage.getItem("username");
-
-try{
-
-const res=await fetch(`${BASE_URL}/issues/issue`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-bookId,
-username
-})
-
-});
-
-const data=await res.json();
-
-if(data.success){
-
-alert("Book issued successfully!");
-
-loadBooks();
-
-}else{
-
-alert(data.message);
-
-}
-
-}catch(err){
-
-alert("Server error");
-
-}
-
-}
-
-
-/* SEARCH */
-
-function searchBooks(){
-
-const searchValue=document.getElementById("search").value.toLowerCase();
-
-const filtered=books.filter(book =>
-book.title.toLowerCase().includes(searchValue)
-);
-
-displayBooks(filtered);
-
-}
-
-
-/* LOGOUT */
-
 function logout(){
-
-window.location.href="index.html";
-
+window.location="index.html"
 }
-
-
-/* START */
-
-loadBooks();
 
 </script>
 
 </body>
-
 </html>

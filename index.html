@@ -12,9 +12,7 @@
 
 </head>
 
-<body class="login-page">
-
-<div class="overlay">
+<body>
 
 <div class="header">
 
@@ -26,6 +24,7 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 </div>
 
+<div class="center-box">
 
 <div class="login-card">
 
@@ -46,11 +45,11 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 <option value="librarian">Librarian</option>
 </select>
 
-<input class="field" type="text" id="systemId" placeholder="System ID">
+<input class="field" type="text" placeholder="System ID">
 
-<input class="field" type="password" id="password" placeholder="Password">
+<input class="field" type="password" placeholder="Password">
 
-<button class="login-btn" type="submit">Sign In</button>
+<button class="login-btn">Sign In</button>
 
 </form>
 
@@ -60,29 +59,17 @@ THE WORLD IS <span>HERE</span>. WHERE ARE <b>YOU</b>?
 
 </div>
 
-
 <script>
 
-document.getElementById("loginForm").addEventListener("submit", function(e){
+document.getElementById("loginForm").addEventListener("submit",function(e){
 
 e.preventDefault();
 
-let role = document.getElementById("role").value;
-let id = document.getElementById("systemId").value;
-let pass = document.getElementById("password").value;
+let role=document.getElementById("role").value;
 
-if(role === "" || id === "" || pass === ""){
-alert("Please fill all fields");
-return;
-}
+if(role==="student") window.location="student.html";
 
-if(role === "student"){
-window.location.href="student.html";
-}
-
-if(role === "librarian"){
-window.location.href="librarian.html";
-}
+if(role==="librarian") window.location="librarian.html";
 
 });
 

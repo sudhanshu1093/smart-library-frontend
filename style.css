@@ -1,5 +1,3 @@
-/* RESET */
-
 *{
 margin:0;
 padding:0;
@@ -7,425 +5,198 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
-
 /* BACKGROUND */
 
 body{
-
 background:url("background.jpg") center/cover no-repeat fixed;
-
 min-height:100vh;
-
 }
 
+/* BLUR (ONLY STUDENT + LIBRARIAN) */
 
-/* BLUR EFFECT */
-
-body::before{
-
+.blur-bg::before{
 content:"";
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
 background:rgba(255,255,255,0.35);
-
 backdrop-filter:blur(8px);
-
 z-index:-1;
-
 }
-
-
-/* LOGIN PAGE */
-
-.login-page{
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
 
 /* HEADER */
 
 .header{
-
 text-align:center;
-
-margin-top:40px;
-
+padding-top:25px;
 }
 
 .logo{
-
-width:180px;
-
+width:220px;
 }
 
 .tagline{
-
-margin-top:10px;
-
+margin-top:8px;
 font-size:18px;
-
 color:#333;
-
 }
 
 .tagline span{
-
-color:#3d63d2;
-
+color:#3d7cff;
 font-weight:600;
-
 }
 
+/* CENTER BOX */
 
-/* LOGIN CARD */
+.center-box{
+display:flex;
+justify-content:center;
+align-items:center;
+height:70vh;
+}
+
+/* CARD */
 
 .login-card{
-
-width:350px;
-
-margin-top:40px;
-
 background:rgba(255,255,255,0.9);
-
-padding:35px;
-
+padding:40px;
+width:350px;
 border-radius:15px;
-
+box-shadow:0 10px 40px rgba(0,0,0,0.25);
 text-align:center;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-
 }
 
-
-/* ICON CIRCLE */
+/* ICON */
 
 .icon-circle{
-
-width:90px;
-height:90px;
-
-margin:auto;
-
+width:95px;
+height:95px;
 border-radius:50%;
-
-background:white;
-
+margin:auto;
 position:relative;
-
-box-shadow:0 0 20px rgba(0,0,0,0.2);
-
+background:white;
+box-shadow:0 0 0 4px white,0 0 20px rgba(0,0,0,0.25);
 }
-
-
-/* EARTH */
 
 .earth{
-
-width:90px;
-
+width:95px;
+animation:spin 6s linear infinite;
 }
-
-
-/* PEOPLE ICON */
 
 .people{
-
-width:55px;
-
+width:60px;
 position:absolute;
-
 top:18px;
 left:18px;
-
 }
 
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
 
-/* FORM FIELDS */
+/* FORM */
 
 .field{
-
 width:100%;
-
-padding:10px;
-
-margin-top:12px;
-
+padding:12px;
+margin:10px 0;
 border-radius:8px;
-
 border:1px solid #ccc;
-
+font-size:14px;
 }
 
-
-/* LOGIN BUTTON */
+/* BUTTON */
 
 .login-btn{
-
 width:100%;
-
-margin-top:15px;
-
-padding:10px;
-
-background:#3d63d2;
-
-color:white;
-
+padding:12px;
+margin-top:10px;
+background:#2f59c6;
 border:none;
-
 border-radius:8px;
-
+color:white;
+font-weight:600;
 cursor:pointer;
-
 }
 
-
-/* REGISTER LINK */
+.login-btn:hover{
+background:#1e3fa3;
+}
 
 .register{
-
 display:block;
-
 margin-top:12px;
-
-color:#3d63d2;
-
 text-decoration:none;
-
+color:#2f59c6;
 }
 
-
-/* NAVBAR (student page) */
+/* DASHBOARD */
 
 .navbar{
-
 background:linear-gradient(135deg,#667eea,#764ba2);
-
 color:white;
-
 padding:15px 30px;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-
 }
-
-
-.nav-left{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-}
-
-
-.logout-btn{
-
-background:white;
-
-color:#667eea;
-
-border:none;
-
-padding:8px 18px;
-
-border-radius:20px;
-
-cursor:pointer;
-
-font-weight:600;
-
-}
-
-
-/* MAIN CONTAINER */
 
 .container{
-
 max-width:1100px;
-
 margin:auto;
-
-padding:35px;
-
+padding:30px;
 }
-
-
-/* SEARCH */
 
 .search-box input{
-
 width:100%;
-
 padding:12px;
-
 border-radius:10px;
-
 border:none;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.15);
-
 margin-bottom:25px;
-
-font-size:14px;
-
 }
-
-
-/* BOOK GRID */
 
 .books{
-
 display:grid;
-
 grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-
 gap:20px;
-
 }
-
-
-/* BOOK CARD */
 
 .book-card{
-
-background:rgba(255,255,255,0.95);
-
+background:white;
 padding:20px;
-
-border-radius:15px;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
-
-transition:0.3s;
-
+border-radius:12px;
+box-shadow:0 8px 15px rgba(0,0,0,0.08);
 }
-
-.book-card:hover{
-
-transform:translateY(-5px);
-
-}
-
-
-/* BOOK TEXT */
-
-.book-card h4{
-
-margin-bottom:6px;
-
-}
-
-.book-card p{
-
-font-size:14px;
-
-color:#555;
-
-}
-
-
-/* ISSUE BUTTON */
 
 .book-card button{
-
-margin-top:10px;
-
-background:#3d63d2;
-
+background:#667eea;
 color:white;
-
 border:none;
-
-padding:8px 14px;
-
+padding:6px 10px;
 border-radius:6px;
-
 cursor:pointer;
-
+margin-top:10px;
 }
-
-
-/* DUES */
 
 .dues{
-
-margin-top:35px;
-
-background:rgba(255,255,255,0.95);
-
+margin-top:30px;
+background:#fff3cd;
 padding:15px;
-
-border-radius:12px;
-
-box-shadow:0 8px 20px rgba(0,0,0,0.15);
-
+border-radius:10px;
 font-weight:600;
-
 }
 
+/* MOBILE */
 
-/* MOBILE RESPONSIVE */
+@media(max-width:480px){
 
-@media (max-width:768px){
+.logo{width:180px;}
 
-.container{
-padding:20px;
-}
+.login-card{width:90%;}
 
-.books{
-grid-template-columns:1fr 1fr;
-}
-
-.logo{
-width:140px;
-}
-
-}
-
-
-@media (max-width:480px){
-
-.navbar{
-flex-direction:column;
-gap:10px;
-text-align:center;
-}
-
-.books{
-grid-template-columns:1fr;
-}
-
-.logo{
-width:120px;
-}
-
-.logout-btn{
-padding:6px 14px;
-}
+.books{grid-template-columns:1fr;}
 
 }
