@@ -15,7 +15,7 @@ align-items:center;
 
 }
 
-/* header */
+/* HEADER */
 
 .header{
 
@@ -29,17 +29,25 @@ width:220px;
 }
 
 .tagline{
-margin-top:10px;
-width:420px;
+
+margin-top:5px;
+font-size:18px;
+color:#333;
+
 }
 
-/* login card */
+.tagline span{
+color:#3d7cff;
+font-weight:600;
+}
+
+/* LOGIN CARD */
 
 .login-card{
 
 margin-top:40px;
 
-background:rgba(255,255,255,0.85);
+background:rgba(255,255,255,0.9);
 
 padding:40px;
 
@@ -53,26 +61,22 @@ text-align:center;
 
 }
 
-/* icon circle */
+/* ICON CIRCLE */
 
 .icon-circle{
 
 width:90px;
 height:90px;
 
-border-radius:50%;
-
-background:white;
-
 margin:auto;
+
+border-radius:50%;
 
 position:relative;
 
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
-
 }
 
-/* rotating earth */
+/* EARTH */
 
 .earth{
 
@@ -85,7 +89,7 @@ animation:spin 8s linear infinite;
 
 }
 
-/* people icon */
+/* PEOPLE */
 
 .people{
 
@@ -98,54 +102,48 @@ left:15px;
 
 }
 
-/* rotation animation */
+/* ROTATION */
 
 @keyframes spin{
 
-from{
-transform:rotate(0deg);
-}
-
-to{
-transform:rotate(360deg);
-}
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
 
 }
 
-.login-card h2{
-margin:20px 0;
-}
+/* FORM FIELDS */
 
-/* inputs */
-
-select,
-input{
+.field{
 
 width:100%;
 
-padding:10px;
+padding:12px;
 
-margin-bottom:15px;
+margin:10px 0;
 
-border-radius:6px;
+border-radius:8px;
 
 border:1px solid #ccc;
 
+font-size:14px;
+
+box-sizing:border-box;
+
 }
 
-/* button */
+/* BUTTON */
 
-button{
+.login-btn{
 
 width:100%;
 
-padding:10px;
+padding:12px;
 
 background:#2f59c6;
 
 border:none;
 
-border-radius:6px;
+border-radius:8px;
 
 color:white;
 
@@ -153,29 +151,31 @@ font-weight:600;
 
 cursor:pointer;
 
-}
-
-button:hover{
-
-background:#1e3fa3;
+margin-top:10px;
 
 }
 
-a{
+.login-btn:hover{
+background:#1d3ea3;
+}
+
+/* REGISTER LINK */
+
+.register{
 
 display:block;
 
-margin-top:10px;
-
-font-size:14px;
+margin-top:12px;
 
 text-decoration:none;
 
 color:#2f59c6;
 
+font-size:14px;
+
 }
 
-/* responsive */
+/* MOBILE */
 
 @media(max-width:480px){
 
@@ -184,11 +184,7 @@ width:90%;
 }
 
 .logo{
-width:170px;
-}
-
-.tagline{
-width:300px;
+width:180px;
 }
 
 }
