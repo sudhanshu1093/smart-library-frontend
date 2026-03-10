@@ -174,3 +174,16 @@ cursor:pointer;
 .book-card button:hover{
 background:#5563d6;
 }
+
+.back-login{
+display:block;
+text-align:center;
+margin-top:15px;
+color:#2C5F9E;
+font-weight:600;
+text-decoration:none;
+}
+
+.back-login:hover{
+color:#1a3f70;
+}
