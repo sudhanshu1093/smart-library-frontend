@@ -154,13 +154,11 @@ padding:30px;
 
 .book-card{
 background:white;
-padding:20px;
-border-radius:0;
+padding:18px;
+border-radius:12px;
 margin:15px auto;
-box-shadow:0 4px 10px rgba(0,0,0,0.08);
-
-width:350px;
-height:350px;
+box-shadow:0 8px 15px rgba(0,0,0,0.08);
+max-width:420px;
 }
 
 .book-card button{
@@ -168,8 +166,8 @@ margin-top:10px;
 background:#667eea;
 color:white;
 border:none;
-padding:8px 14px;
-border-radius:0px;
+padding:6px 12px;
+border-radius:6px;
 cursor:pointer;
 }
 
