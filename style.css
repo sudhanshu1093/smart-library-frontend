@@ -120,6 +120,22 @@ cursor:pointer;
 background:#1e3fa3;
 }
 
+.register-btn{
+display:block;
+text-align:center;
+margin-top:15px;
+padding:10px;
+border-radius:8px;
+background:#f0f4ff;
+color:#2C5F9E;
+font-weight:600;
+text-decoration:none;
+}
+
+.register-btn:hover{
+background:#e3ebff;
+}
+
 /* DASHBOARD */
 
 .navbar{
