@@ -62,7 +62,6 @@ displayBooks(books);
 
 }
 
-
 /* DISPLAY BOOKS */
 
 function displayBooks(bookArray){
@@ -85,9 +84,10 @@ Available: ${book.quantity}
 
 <br><br>
 
-<button onclick="issueBook('${book._id}')">
-Issue
-</button>
+${book.quantity>0
+? `<button onclick="issueBook('${book._id}')">Issue</button>`
+: `<button disabled>Not Available</button>`
+}
 
 </div>
 
@@ -96,7 +96,6 @@ Issue
 });
 
 }
-
 
 /* ISSUE BOOK */
 
@@ -121,40 +120,55 @@ const data=await res.json();
 
 alert(data.message || "Book Issued");
 
-loadBooks();
-
-loadIssuedBooks();
-
-}
-
-
-/* LOAD ISSUED BOOKS */
-
-async function issueBook(bookId){
-
-const res = await fetch(`${BASE_URL}/issues/issue`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-bookId,
-username
-})
-
-});
-
-const data = await res.json();
-
-alert(data.message || "Book Issued");
-
 if(data.success){
 loadBooks();
 loadIssuedBooks();
+loadFine();
 }
+
+}
+
+/* LOAD ISSUED BOOKS */
+
+async function loadIssuedBooks(){
+
+const res=await fetch(`${BASE_URL}/issues/user/${username}`);
+
+const data=await res.json();
+
+const list=document.getElementById("issuedList");
+
+list.innerHTML="";
+
+data.issues.forEach(issue=>{
+
+list.innerHTML+=`
+
+<div class="book-card">
+
+<b>${issue.bookId.title}</b><br>
+
+Issued: ${new Date(issue.issueDate).toDateString()}<br>
+
+Return By: ${new Date(issue.dueDate).toDateString()}
+
+</div>
+
+`;
+
+});
+
+}
+
+/* LOAD FINE */
+
+async function loadFine(){
+
+const res=await fetch(`${BASE_URL}/issues/fine/${username}`);
+
+const data=await res.json();
+
+document.getElementById("dues").innerText=data.fine;
 
 }
 
@@ -172,7 +186,6 @@ displayBooks(filtered);
 
 }
 
-
 /* LOGOUT */
 
 function logout(){
@@ -183,14 +196,12 @@ window.location.href="index.html";
 
 }
 
-
 /* PAGE LOAD */
 
 loadBooks();
-
 loadIssuedBooks();
+loadFine();
 
 </script>
-
 </body>
 </html>
