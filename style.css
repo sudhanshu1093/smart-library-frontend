@@ -155,7 +155,7 @@ padding:30px;
 .book-card{
 background:white;
 padding:20px;
-border-radius:12px;
+border-radius:0px;
 margin-bottom:10px;
 box-shadow:0 8px 15px rgba(0,0,0,0.08);
 }
@@ -165,7 +165,11 @@ margin-top:10px;
 background:#667eea;
 color:white;
 border:none;
-padding:6px 10px;
-border-radius:6px;
+padding:8px 14px;
+border-radius:0px;
 cursor:pointer;
+}
+
+.book-card button:hover{
+background:#5563d6;
 }
