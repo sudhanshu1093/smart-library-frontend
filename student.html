@@ -132,17 +132,16 @@ loadFine();
 
 async function loadIssuedBooks(){
 
-const res=await fetch(`${BASE_URL}/issues/user/${username}`);
+const res = await fetch(`${BASE_URL}/issues/user/${username}`);
+const data = await res.json();
 
-const data=await res.json();
+const list = document.getElementById("issuedList");
 
-const list=document.getElementById("issuedList");
+list.innerHTML = "";
 
-list.innerHTML="";
+(data.issues || []).forEach(issue=>{
 
-data.issues.forEach(issue=>{
-
-list.innerHTML+=`
+list.innerHTML += `
 
 <div class="book-card">
 
@@ -159,7 +158,6 @@ Return By: ${new Date(issue.dueDate).toDateString()}
 });
 
 }
-
 /* LOAD FINE */
 
 async function loadFine(){
