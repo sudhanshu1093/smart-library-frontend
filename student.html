@@ -3,110 +3,53 @@
 <head>
 
 <title>Student Dashboard</title>
+
 <link rel="stylesheet" href="style.css">
-
-<style>
-
-body{
-font-family: Arial;
-margin:0;
-background:#f4f6fb;
-}
-
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 30px;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
-}
-
-.container{
-padding:30px;
-max-width:900px;
-margin:auto;
-}
-
-.field{
-width:100%;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
-margin-bottom:20px;
-}
-
-.book-card{
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.08);
-}
-
-button{
-padding:6px 14px;
-border:none;
-border-radius:6px;
-background:#667eea;
-color:white;
-cursor:pointer;
-}
-
-button:disabled{
-background:gray;
-}
-
-.section-title{
-margin-top:30px;
-margin-bottom:10px;
-font-size:20px;
-font-weight:bold;
-}
-
-</style>
 
 </head>
 
-<body>
+<body class="blur-bg">
 
 <div class="navbar">
 
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:40px;">
 <h2>Student Dashboard</h2>
-
-<button onclick="logout()">Logout</button>
-
 </div>
 
+<button onclick="logout()" class="login-btn" style="width:120px;height:35px;padding:0;">
+Logout
+</button>
+
+</div>
 
 <div class="container">
 
 <input id="search" class="field" placeholder="Search books..." onkeyup="searchBooks()">
 
+<h3>Available Books</h3>
 
-<div class="section-title">Available Books</div>
 <div id="bookList"></div>
 
+<h3>My Issued Books</h3>
 
-<div class="section-title">My Issued Books</div>
 <div id="issuedList"></div>
 
-
-<div class="section-title">
+<div class="total-dues">
 Total Dues: ₹<span id="dues">0</span>
 </div>
 
 </div>
-
 
 <script>
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
 let books=[];
-let issuedBooks=[];
 
+const username=localStorage.getItem("username");
 
+/* LOAD BOOKS */
 
 async function loadBooks(){
 
@@ -120,6 +63,8 @@ displayBooks(books);
 }
 
 
+/* DISPLAY BOOKS */
+
 function displayBooks(bookArray){
 
 const list=document.getElementById("bookList");
@@ -128,22 +73,24 @@ list.innerHTML="";
 
 bookArray.forEach(book=>{
 
-const disabled=book.available===0 ? "disabled":"";
-
 list.innerHTML+=`
+
 <div class="book-card">
 
 <b>${book.title}</b><br>
+
 Author: ${book.author}<br>
-Available: ${book.available}
+
+Available: ${book.quantity}
 
 <br><br>
 
-<button ${disabled} onclick="issueBook('${book._id}')">
+<button onclick="issueBook('${book._id}')">
 Issue
 </button>
 
 </div>
+
 `;
 
 });
@@ -151,60 +98,65 @@ Issue
 }
 
 
+/* ISSUE BOOK */
 
-async function issueBook(id){
+async function issueBook(bookId){
 
-if(issuedBooks.length>=3){
+const res=await fetch(`${BASE_URL}/issues/issue`,{
 
-alert("Maximum 3 books allowed");
-
-return;
-
-}
-
-await fetch(`${BASE_URL}/issue`,{
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-bookId:id,
-userId:localStorage.getItem("userId")
+bookId,
+username
 })
+
 });
 
+const data=await res.json();
+
+alert(data.message || "Book Issued");
+
 loadBooks();
+
 loadIssuedBooks();
 
 }
 
 
+/* LOAD ISSUED BOOKS */
 
 async function loadIssuedBooks(){
 
-const res=await fetch(`${BASE_URL}/issued/${localStorage.getItem("userId")}`);
-const data=await res.json();
+const res=await fetch(`${BASE_URL}/issues/student/${username}`);
 
-issuedBooks=data.books;
+const data=await res.json();
 
 const list=document.getElementById("issuedList");
 
 list.innerHTML="";
 
-data.books.forEach(book=>{
+data.issues.forEach(issue=>{
 
-const issueDate=new Date(book.issueDate).toLocaleDateString();
-const returnDate=new Date(book.returnDate).toLocaleDateString();
+const issueDate=new Date(issue.issueDate).toLocaleDateString();
+
+const dueDate=new Date(issue.dueDate).toLocaleDateString();
 
 list.innerHTML+=`
 
 <div class="book-card">
 
-<b>${book.title}</b><br>
-Author: ${book.author}<br>
+<b>${issue.bookId.title}</b><br>
+
+Author: ${issue.bookId.author}<br>
 
 Issued Date: ${issueDate}<br>
-Submit Date: ${returnDate}
+
+Submit Date: ${dueDate}
 
 </div>
 
@@ -215,6 +167,7 @@ Submit Date: ${returnDate}
 }
 
 
+/* SEARCH BOOKS */
 
 function searchBooks(){
 
@@ -229,17 +182,21 @@ displayBooks(filtered);
 }
 
 
+/* LOGOUT */
 
 function logout(){
 
 localStorage.clear();
+
 window.location.href="index.html";
 
 }
 
 
+/* PAGE LOAD */
 
 loadBooks();
+
 loadIssuedBooks();
 
 </script>
