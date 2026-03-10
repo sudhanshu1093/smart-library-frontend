@@ -68,7 +68,10 @@ list.innerHTML+=`
 
 <p>Available: ${book.quantity}</p>
 
-<button onclick="issueBook('${book._id}')">Issue</button>
+${book.quantity > 0 
+? `<button onclick="issueBook('${book._id}')">Issue</button>` 
+: `<button disabled>Not Available</button>`
+}
 
 </div>
 
@@ -94,7 +97,7 @@ async function issueBook(bookId){
 
 const username=localStorage.getItem("username");
 
-await fetch(`${BASE_URL}/issues/issue`,{
+const res=await fetch(`${BASE_URL}/issues/issue`,{
 
 method:"POST",
 
@@ -109,9 +112,34 @@ username
 
 });
 
-alert("Book Issued");
+const data=await res.json();
+
+alert(data.message);
+
+if(data.issue){
+
+alert(
+"Issue Date: "+ new Date(data.issue.issueDate).toDateString() +
+"\nReturn Before: "+ new Date(data.issue.dueDate).toDateString()
+);
+
+}
 
 loadBooks();
+loadFine();
+
+}
+
+async function loadFine(){
+
+const username=localStorage.getItem("username");
+
+const res=await fetch(`${BASE_URL}/issues/fine/${username}`);
+
+const data=await res.json();
+
+document.querySelector(".total-dues").innerText =
+"Total Dues: ₹"+data.fine;
 
 }
 
@@ -123,6 +151,7 @@ window.location="index.html";
 }
 
 loadBooks();
+loadFine();
 
 </script>
 
