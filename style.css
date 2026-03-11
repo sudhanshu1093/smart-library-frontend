@@ -105,19 +105,16 @@ border:1px solid #ccc;
 /* BUTTON */
 
 .login-btn{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#2f59c6;
-border:none;
-border-radius:8px;
-color:white;
+display:block;
+text-align:center;
+margin-top:15px;
+color:#2C5F9E;
 font-weight:600;
-cursor:pointer;
+text-decoration:none;
 }
 
 .login-btn:hover{
-background:#1e3fa3;
+color:#1a3f70;
 }
 
 .register-btn{
