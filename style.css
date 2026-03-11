@@ -272,3 +272,8 @@ font-weight:600;
 color:#e53935;
 font-weight:600;
 }
+
+.sidebar p{
+text-align:center;
+margin:8px 0;
+}
