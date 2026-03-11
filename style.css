@@ -150,7 +150,6 @@ background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
 padding:15px 20px;
 display:flex;
-justify-content:space-between;
 align-items:center;
 height:70px;
 width:100%;
@@ -327,14 +326,15 @@ gap:10px;
 /* PROFILE ICON */
 
 .profile-icon{
-width:120px;
-height:120px;
+width:50px;
+height:50px;
 border-radius:50%;
-display:block;
-margin:20px auto;
+position:absolute;
+right:20px;
+top:10px;
 object-fit:cover;
-border:5px solid white;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
+border:2px solid white;
+background:white;
 }
 
 /* MOBILE RESPONSIVE */
