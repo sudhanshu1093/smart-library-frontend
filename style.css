@@ -204,12 +204,15 @@ font-weight:600;
 color:#e53935;
 font-weight:600;
 }
+
 .profile-icon{
-width:35px;
+width:38px;
 border-radius:50%;
 cursor:pointer;
 margin-left:auto;
 }
+
+/* SIDEBAR */
 
 .sidebar{
 position:fixed;
@@ -221,15 +224,16 @@ background:white;
 padding:20px;
 box-shadow:2px 0 10px rgba(0,0,0,0.1);
 transition:0.3s;
-
 display:flex;
 flex-direction:column;
+z-index:999;
 }
+
+/* THIS IS THE MOST IMPORTANT LINE */
 
 .sidebar.active{
 left:0;
 }
-
 .sidebar button{
 width:100%;
 margin-top:10px;

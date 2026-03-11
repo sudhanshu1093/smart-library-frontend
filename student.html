@@ -74,11 +74,15 @@ document.getElementById("profileUsername").innerText=username;
 
 /* PROFILE CLICK → OPEN SIDEBAR */
 
+window.onload=function(){
+
 const profileIcon=document.getElementById("profileIcon");
 const sidebar=document.getElementById("sidebar");
 
-profileIcon.onclick=function(){
+profileIcon.addEventListener("click",function(){
 sidebar.classList.toggle("active");
+});
+
 };
 
 
