@@ -133,6 +133,19 @@ text-decoration:none;
 color:#1a3f70;
 }
 
+.back-login{
+display:block;
+text-align:center;
+margin-top:15px;
+color:#2C5F9E;
+font-weight:600;
+text-decoration:none;
+}
+
+.back-login:hover{
+color:#1a3f70;
+}
+
 /* NAVBAR */
 
 .navbar{
