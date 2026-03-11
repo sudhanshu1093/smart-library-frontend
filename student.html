@@ -191,9 +191,24 @@ Return By: ${returnDate}
 
 });
 
-document.getElementById("issuedCount").innerText=(data.issues.length)+" / 3";
-document.getElementById("nextReturn").innerText=next;
+const issuedCount = data.issues.length;
+const countElement = document.getElementById("issuedCount");
 
+countElement.innerText = issuedCount + " / 3";
+
+countElement.classList.remove("green","orange","red");
+
+if(issuedCount === 1){
+countElement.classList.add("green");
+}
+else if(issuedCount === 2){
+countElement.classList.add("orange");
+}
+else if(issuedCount >= 3){
+countElement.classList.add("red");
+}
+
+document.getElementById("nextReturn").innerText = next;
 }
 
 

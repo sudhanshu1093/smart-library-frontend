@@ -216,15 +216,14 @@ position:fixed;
 left:-240px;
 top:70px;
 width:220px;
-height:100%;
+height:calc(100vh - 70px);
 background:white;
 padding:20px;
 box-shadow:2px 0 10px rgba(0,0,0,0.1);
 transition:0.3s;
-}
 
-.sidebar.active{
-left:0;
+display:flex;
+flex-direction:column;
 }
 
 .sidebar button{
@@ -236,4 +235,28 @@ background:#667eea;
 color:white;
 border-radius:6px;
 cursor:pointer;
+}
+
+.sidebar button:last-child{
+margin-top:auto;
+}
+#profileUsername{
+display:block;
+margin-bottom:12px;
+font-weight:600;
+}
+
+.green{
+color:#28a745;
+font-weight:600;
+}
+
+.orange{
+color:#ff9800;
+font-weight:600;
+}
+
+.red{
+color:#e53935;
+font-weight:600;
 }
