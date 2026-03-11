@@ -150,8 +150,8 @@ background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
 padding:15px 20px;
 display:flex;
+justify-content:space-between;
 align-items:center;
-gap:10px;
 height:70px;
 width:100%;
 position:relative;
@@ -327,8 +327,8 @@ gap:10px;
 /* PROFILE ICON */
 
 .profile-icon{
-width:45px;
-height:45px;
+width:40px;
+height:40px;
 border-radius:50%;
 position:absolute;
 right:20px;
@@ -336,7 +336,6 @@ top:50%;
 transform:translateY(-50%);
 object-fit:cover;
 border:2px solid white;
-background:white;
 }
 
 /* MOBILE RESPONSIVE */
