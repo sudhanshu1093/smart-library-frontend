@@ -25,6 +25,10 @@ Logout
 
 <div class="container">
 
+<div class="dashboard-summary">
+Books Issued: <span id="issuedCount">0 / 3</span>
+</div>
+
 <input id="search" class="field" placeholder="Search books..." onkeyup="searchBooks()">
 
 <h3>Available Books</h3>
@@ -134,6 +138,24 @@ async function loadIssuedBooks(){
 
 const res = await fetch(`${BASE_URL}/issues/user/${username}`);
 const data = await res.json();
+
+const issuedCount = data.issues.length;
+
+const countElement = document.getElementById("issuedCount");
+
+countElement.innerText = issuedCount + " / 3";
+
+countElement.classList.remove("green","orange","red");
+
+if(issuedCount === 1){
+countElement.classList.add("green");
+}
+else if(issuedCount === 2){
+countElement.classList.add("orange");
+}
+else if(issuedCount >= 3){
+countElement.classList.add("red");
+}
 
 const list = document.getElementById("issuedList");
 
