@@ -1,8 +1,8 @@
-*{
+body{
 margin:0;
 padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+width:100%;
+overflow-x:hidden;
 }
 
 /* BACKGROUND */
@@ -161,9 +161,9 @@ height:70px;
 /* CONTAINER */
 
 .container{
-max-width:1000px;
-margin:auto;
-padding:30px;
+width:100%;
+max-width:100%;
+padding:20px;
 }
 
 /* BOOK CARD */
@@ -280,6 +280,10 @@ font-weight:600;
 /* ================= MOBILE RESPONSIVE ================= */
 
 @media(max-width:768px){
+
+.navbar{
+    padding: 15px;
+}
 
 .container{
 padding:20px;
