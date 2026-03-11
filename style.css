@@ -1,9 +1,18 @@
-body{
+/* RESET */
+
+*{
 margin:0;
 padding:0;
-width:100%;
-overflow-x:hidden;
+box-sizing:border-box;
+}
 
+html,body{
+overflow-x:hidden;
+}
+
+/* BODY */
+
+body{
 background:url("background.jpg") center/cover no-repeat fixed;
 min-height:100vh;
 }
@@ -48,7 +57,7 @@ align-items:center;
 height:70vh;
 }
 
-/* CARD */
+/* LOGIN CARD */
 
 .login-card{
 background:white;
@@ -116,19 +125,9 @@ cursor:pointer;
 background:#1e3fa3;
 }
 
-.register-btn{
-display:block;
-text-align:center;
-margin-top:15px;
-color:#2C5F9E;
-font-weight:600;
-text-decoration:none;
-}
+/* LINKS */
 
-.register-btn:hover{
-color:#1a3f70;
-}
-
+.register-btn,
 .back-login{
 display:block;
 text-align:center;
@@ -138,6 +137,7 @@ font-weight:600;
 text-decoration:none;
 }
 
+.register-btn:hover,
 .back-login:hover{
 color:#1a3f70;
 }
@@ -152,14 +152,16 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 height:70px;
+width:100%;
 }
 
 /* CONTAINER */
 
 .container{
 width:100%;
-max-width:100%;
 padding:20px;
+max-width:1200px;
+margin:auto;
 }
 
 /* BOOK CARD */
@@ -187,7 +189,7 @@ cursor:pointer;
 background:#5563d6;
 }
 
-/* GRID BOOK LIST */
+/* BOOK GRID */
 
 #bookList{
 display:grid;
@@ -230,14 +232,21 @@ width:200px;
 text-align:center;
 }
 
+/* TABLE WRAPPER */
+
+.table-wrapper{
+width:100%;
+overflow-x:auto;
+}
+
 /* ISSUED TABLE */
 
 .issued-table{
-width:100%;
+min-width:650px;
 background:white;
 border-radius:10px;
-overflow:hidden;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
+border-collapse:collapse;
 }
 
 .issued-table th{
@@ -245,11 +254,13 @@ background:#667eea;
 color:white;
 padding:12px;
 text-align:left;
+white-space:nowrap;
 }
 
 .issued-table td{
 padding:12px;
 border-bottom:1px solid #eee;
+white-space:nowrap;
 }
 
 .issued-table tr:hover{
@@ -273,60 +284,6 @@ color:#e53935;
 font-weight:600;
 }
 
-/* ================= MOBILE RESPONSIVE ================= */
-
-@media(max-width:768px){
-
-.navbar{
-    padding: 15px;
-}
-
-.container{
-padding:20px;
-width:100%;
-}
-
-#bookList{
-grid-template-columns:1fr;
-}
-
-.stats{
-flex-direction:column;
-gap:15px;
-}
-
-.stat-card{
-width:100%;
-}
-
-.login-card{
-width:90%;
-}
-
-.navbar{
-flex-direction:column;
-align-items:flex-start;
-gap:10px;
-}
-
-.field{
-width:100%;
-font-size:16px;
-}
-
-button{
-width:100%;
-}
-
-table{
-font-size:14px;
-}
-
-#issuedList{
-overflow-x:auto;
-}
-
-}
 /* SIDEBAR */
 
 .sidebar{
@@ -341,18 +298,15 @@ box-shadow:2px 0 10px rgba(0,0,0,0.1);
 display:flex;
 flex-direction:column;
 z-index:999;
-
 transform:translateX(-100%);
 transition:transform 0.3s ease;
 }
-
-/* OPEN SIDEBAR */
 
 .sidebar.active{
 transform:translateX(0);
 }
 
-/* PROFILE ACTIONS */
+/* PROFILE */
 
 .profile-actions{
 margin-top:auto;
@@ -361,8 +315,6 @@ flex-direction:column;
 gap:10px;
 }
 
-/* PROFILE STATS */
-
 .profile-stats{
 margin-top:20px;
 display:flex;
@@ -370,6 +322,39 @@ flex-direction:column;
 gap:10px;
 }
 
-html, body{
-overflow-x:hidden;
+/* MOBILE RESPONSIVE */
+
+@media(max-width:768px){
+
+.navbar{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+height:auto;
+}
+
+.container{
+padding:15px;
+}
+
+#bookList{
+grid-template-columns:1fr;
+}
+
+.stats{
+flex-direction:column;
+}
+
+.stat-card{
+width:100%;
+}
+
+.login-card{
+width:90%;
+}
+
+button{
+width:100%;
+}
+
 }
