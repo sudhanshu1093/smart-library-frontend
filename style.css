@@ -121,16 +121,19 @@ background:#1e3fa3;
 }
 
 .register-btn{
-display:block;
-text-align:center;
-margin-top:15px;
-color:#2C5F9E;
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#2f59c6;
+border:none;
+border-radius:8px;
+color:white;
 font-weight:600;
-text-decoration:none;
+cursor:pointer;
 }
 
 .register-btn:hover{
-color:#1a3f70;
+background:#1e3fa3;
 }
 
 /* NAVBAR */
