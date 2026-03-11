@@ -142,16 +142,16 @@ document.getElementById("totalBooks").innerText=total;
 
 async function loadIssued(){
 
-const res=await fetch(`${BASE_URL}/issue`);
-const data=await res.json();
+const res = await fetch(`${BASE_URL}/issues`);
+const data = await res.json();
 
-const list=document.getElementById("issuedList");
+const list = document.getElementById("issuedList");
 
 list.innerHTML="";
 
-document.getElementById("issuedCount").innerText=data.issued.length;
+document.getElementById("issuedCount").innerText=data.length;
 
-data.issued.forEach(book=>{
+data.forEach(book=>{
 
 list.innerHTML+=`
 
@@ -160,6 +160,8 @@ list.innerHTML+=`
 <h4>${book.title}</h4>
 
 <p>Student ID: ${book.student}</p>
+
+<p>Issued Date: ${new Date(book.issueDate).toDateString()}</p>
 
 </div>
 
@@ -225,7 +227,7 @@ async function issueBook(){
 let student=document.getElementById("studentId").value;
 let title=document.getElementById("bookTitle").value;
 
-await fetch(`${BASE_URL}/issue`,{
+await fetch(`${BASE_URL}/issues`,{
 
 method:"POST",
 
