@@ -24,7 +24,7 @@ Logout
 
 </div>
 
-<!-- MAIN CONTAINER -->
+<!-- MAIN -->
 
 <div class="container">
 
@@ -70,7 +70,24 @@ Books Issued
 
 <h3>Issued Books</h3>
 
-<div id="issuedList"></div>
+<table class="issued-table">
+
+<thead>
+
+<tr>
+<th>Book</th>
+<th>Student ID</th>
+<th>Issued Date</th>
+<th>Due Date</th>
+<th>Fine</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="issuedList"></tbody>
+
+</table>
 
 </div>
 
@@ -124,29 +141,54 @@ const data = await res.json();
 
 const list = document.getElementById("issuedList");
 
-list.innerHTML = "";
-
-if(!data.issues) return;
+list.innerHTML="";
 
 document.getElementById("issuedCount").innerText = data.issues.length;
 
-data.issues.forEach(issue => {
+data.issues.forEach(issue=>{
+
+const today = new Date();
+const due = new Date(issue.dueDate);
+
+let fine = 0;
+
+if(today > due){
+
+const lateDays = Math.ceil((today - due)/(1000*60*60*24));
+fine = lateDays;
+
+}
 
 list.innerHTML += `
-<div class="book-card">
 
-<h4>${issue.bookId.title}</h4>
+<tr>
 
-<p>Student ID: ${issue.username}</p>
+<td>${issue.bookId.title}</td>
 
-<p>Issued: ${new Date(issue.issueDate).toDateString()}</p>
+<td>${issue.username}</td>
 
-</div>
+<td>${new Date(issue.issueDate).toDateString()}</td>
+
+<td>${new Date(issue.dueDate).toDateString()}</td>
+
+<td>₹${fine}</td>
+
+<td>
+
+<button onclick="returnBook('${issue._id}')" class="login-btn">
+Return
+</button>
+
+</td>
+
+</tr>
+
 `;
 
 });
 
 }
+
 /* ================= ADD BOOK ================= */
 
 async function addBook(){
@@ -178,6 +220,31 @@ document.getElementById("author").value="";
 document.getElementById("qty").value="";
 
 loadBooks();
+
+}
+
+/* ================= RETURN BOOK ================= */
+
+async function returnBook(issueId){
+
+await fetch(`${BASE_URL}/issues/return`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+issueId
+})
+
+});
+
+alert("Book Returned");
+
+loadBooks();
+loadIssued();
 
 }
 
