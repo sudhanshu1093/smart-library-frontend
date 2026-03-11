@@ -245,8 +245,11 @@ border-radius:6px;
 cursor:pointer;
 }
 
-.sidebar button:last-child{
+.profile-actions{
 margin-top:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
 #profileUsername{
