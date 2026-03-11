@@ -129,6 +129,10 @@ font-weight:600;
 text-decoration:none;
 }
 
+.register-btn:hover{
+color:#1a3f70;
+}
+
 /* NAVBAR */
 
 .navbar{
