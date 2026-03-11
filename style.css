@@ -301,3 +301,35 @@ box-shadow:0 4px 10px rgba(0,0,0,0.1);
 width:200px;
 text-align:center;
 }
+
+.issued-table{
+
+width:100%;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+
+}
+
+.issued-table th{
+
+background:#667eea;
+color:white;
+padding:12px;
+text-align:left;
+
+}
+
+.issued-table td{
+
+padding:12px;
+border-bottom:1px solid #eee;
+
+}
+
+.issued-table tr:hover{
+
+background:#f4f6fb;
+
+}
