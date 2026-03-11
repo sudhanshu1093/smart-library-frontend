@@ -124,14 +124,15 @@ const data = await res.json();
 
 const list = document.getElementById("issuedList");
 
-list.innerHTML="";
+list.innerHTML = "";
+
+if(!data.issues) return;
 
 document.getElementById("issuedCount").innerText = data.issues.length;
 
-data.issues.forEach(issue=>{
+data.issues.forEach(issue => {
 
 list.innerHTML += `
-
 <div class="book-card">
 
 <h4>${issue.bookId.title}</h4>
@@ -141,13 +142,11 @@ list.innerHTML += `
 <p>Issued: ${new Date(issue.issueDate).toDateString()}</p>
 
 </div>
-
 `;
 
 });
 
 }
-
 /* ================= ADD BOOK ================= */
 
 async function addBook(){
