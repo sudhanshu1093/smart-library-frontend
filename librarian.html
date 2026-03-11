@@ -29,6 +29,28 @@ Logout
 
 <div class="container">
 
+<!-- DASHBOARD STATS -->
+
+<h3>Library Stats</h3>
+
+<div class="stats">
+
+<div class="stat-card">
+Total Books
+<h2 id="totalBooks">0</h2>
+</div>
+
+<div class="stat-card">
+Books Issued
+<h2 id="issuedCount">0</h2>
+</div>
+
+</div>
+
+<br>
+
+<!-- ADD BOOK -->
+
 <h3>Add Book</h3>
 
 <input class="field" id="title" placeholder="Book Name">
@@ -41,9 +63,31 @@ Logout
 
 <br><br>
 
+<!-- ISSUE BOOK -->
+
+<h3>Issue Book</h3>
+
+<input class="field" id="studentId" placeholder="Student ID">
+
+<input class="field" id="bookTitle" placeholder="Book Name">
+
+<button class="login-btn" onclick="issueBook()">Issue Book</button>
+
+<br><br>
+
+<!-- BOOK LIST -->
+
 <h3>Books in Library</h3>
 
 <div id="bookList"></div>
+
+<br>
+
+<!-- ISSUED BOOKS -->
+
+<h3>Issued Books</h3>
+
+<div id="issuedList"></div>
 
 </div>
 
@@ -60,6 +104,8 @@ const list=document.getElementById("bookList");
 
 list.innerHTML="";
 
+document.getElementById("totalBooks").innerText=data.books.length;
+
 data.books.forEach(book=>{
 
 list.innerHTML+=`
@@ -71,6 +117,10 @@ list.innerHTML+=`
 <p>Author: ${book.author}</p>
 
 <p>Quantity: ${book.quantity}</p>
+
+<button onclick="deleteBook('${book._id}')" class="login-btn">
+Delete
+</button>
 
 </div>
 
@@ -109,6 +159,40 @@ document.getElementById("author").value="";
 document.getElementById("qty").value="";
 
 loadBooks();
+
+}
+
+async function deleteBook(id){
+
+await fetch(`${BASE_URL}/books/${id}`,{
+method:"DELETE"
+});
+
+loadBooks();
+
+}
+
+async function issueBook(){
+
+let student=document.getElementById("studentId").value;
+let title=document.getElementById("bookTitle").value;
+
+await fetch(`${BASE_URL}/issue`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+student,
+title
+})
+
+});
+
+alert("Book Issued");
 
 }
 
