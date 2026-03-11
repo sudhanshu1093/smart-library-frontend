@@ -292,9 +292,52 @@ gap:10px;
 
 }
 .profile-icon{
-width:40px;
-height:40px;
-object-fit:cover;
+width:38px;
+height:38px;
 border-radius:50%;
 cursor:pointer;
+border:2px solid white;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+top:70px;
+left:0;
+width:220px;
+height:calc(100vh - 70px);
+background:white;
+padding:20px;
+box-shadow:2px 0 10px rgba(0,0,0,0.1);
+display:flex;
+flex-direction:column;
+z-index:999;
+
+transform:translateX(-100%);
+transition:transform 0.3s ease;
+}
+
+/* OPEN SIDEBAR */
+
+.sidebar.active{
+transform:translateX(0);
+}
+
+/* PROFILE ACTIONS */
+
+.profile-actions{
+margin-top:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+/* PROFILE STATS */
+
+.profile-stats{
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
