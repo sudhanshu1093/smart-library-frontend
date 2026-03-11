@@ -3,12 +3,13 @@
 <head>
 
 <title>Student Dashboard</title>
-
 <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body class="blur-bg">
+
+<!-- NAVBAR -->
 
 <div class="navbar">
 
@@ -17,54 +18,82 @@
 <h2>Student Dashboard</h2>
 </div>
 
-<button onclick="logout()" class="login-btn" style="width:120px;height:35px;padding:0;">
-Logout
-</button>
+<!-- PROFILE IMAGE -->
+<img src="profile.jpg" id="profileIcon" class="profile-icon">
 
 </div>
+
+
+<!-- LEFT SIDEBAR -->
+
+<div id="sidebar" class="sidebar">
+
+<h3>Student Profile</h3>
+
+<p><b id="profileUsername"></b></p>
+
+<p>📚 Books Issued: <span id="issuedCount">0 / 3</span></p>
+
+<p>💰 Total Dues: ₹<span id="dues">0</span></p>
+
+<p>📅 Next Return: <span id="nextReturn">--</span></p>
+
+<button onclick="changePassword()">Change Password</button>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+
+<!-- MAIN DASHBOARD -->
 
 <div class="container">
-
-<div class="dashboard-summary">
-Books Issued: <span id="issuedCount">0 / 3</span>
-</div>
 
 <input id="search" class="field" placeholder="Search books..." onkeyup="searchBooks()">
 
 <h3>Available Books</h3>
-
 <div id="bookList"></div>
 
 <h3>My Issued Books</h3>
-
 <div id="issuedList"></div>
 
-<div class="total-dues">
-Total Dues: ₹<span id="dues">0</span>
 </div>
 
-</div>
 
 <script>
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
 let books=[];
-
 const username=localStorage.getItem("username");
+
+/* SHOW USERNAME */
+
+document.getElementById("profileUsername").innerText=username;
+
+
+/* PROFILE CLICK → OPEN SIDEBAR */
+
+const profileIcon=document.getElementById("profileIcon");
+const sidebar=document.getElementById("sidebar");
+
+profileIcon.onclick=function(){
+sidebar.classList.toggle("active");
+};
+
 
 /* LOAD BOOKS */
 
 async function loadBooks(){
 
-const res=await fetch(`${BASE_URL}/books`);
+const res=await fetch(BASE_URL+"/books");
 const data=await res.json();
 
 books=data.books;
-
 displayBooks(books);
 
 }
+
 
 /* DISPLAY BOOKS */
 
@@ -74,16 +103,14 @@ const list=document.getElementById("bookList");
 
 list.innerHTML="";
 
-bookArray.forEach(book=>{
+bookArray.forEach(function(book){
 
 list.innerHTML+=`
 
 <div class="book-card">
 
 <b>${book.title}</b><br>
-
 Author: ${book.author}<br>
-
 Available: ${book.quantity}
 
 <br><br>
@@ -101,17 +128,15 @@ ${book.quantity>0
 
 }
 
+
 /* ISSUE BOOK */
 
 async function issueBook(bookId){
 
-const res=await fetch(`${BASE_URL}/issues/issue`,{
+const res=await fetch(BASE_URL+"/issues/issue",{
 
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
+headers:{ "Content-Type":"application/json" },
 
 body:JSON.stringify({
 bookId,
@@ -122,56 +147,43 @@ username
 
 const data=await res.json();
 
-alert(data.message || "Book Issued");
+alert(data.message);
 
-if(data.success){
 loadBooks();
 loadIssuedBooks();
 loadFine();
-}
 
 }
+
 
 /* LOAD ISSUED BOOKS */
 
 async function loadIssuedBooks(){
 
-const res = await fetch(`${BASE_URL}/issues/user/${username}`);
-const data = await res.json();
+const res=await fetch(BASE_URL+"/issues/user/"+username);
+const data=await res.json();
 
-const issuedCount = data.issues.length;
+const list=document.getElementById("issuedList");
 
-const countElement = document.getElementById("issuedCount");
+list.innerHTML="";
 
-countElement.innerText = issuedCount + " / 3";
+let next="--";
 
-countElement.classList.remove("green","orange","red");
+(data.issues || []).forEach(function(issue){
 
-if(issuedCount === 1){
-countElement.classList.add("green");
-}
-else if(issuedCount === 2){
-countElement.classList.add("orange");
-}
-else if(issuedCount >= 3){
-countElement.classList.add("red");
+const returnDate=new Date(issue.dueDate).toDateString();
+
+if(next==="--"){
+next=returnDate;
 }
 
-const list = document.getElementById("issuedList");
-
-list.innerHTML = "";
-
-(data.issues || []).forEach(issue=>{
-
-list.innerHTML += `
+list.innerHTML+=`
 
 <div class="book-card">
 
 <b>${issue.bookId.title}</b><br>
-
 Issued: ${new Date(issue.issueDate).toDateString()}<br>
-
-Return By: ${new Date(issue.dueDate).toDateString()}
+Return By: ${returnDate}
 
 </div>
 
@@ -179,49 +191,61 @@ Return By: ${new Date(issue.dueDate).toDateString()}
 
 });
 
+document.getElementById("issuedCount").innerText=(data.issues.length)+" / 3";
+document.getElementById("nextReturn").innerText=next;
+
 }
+
+
 /* LOAD FINE */
 
 async function loadFine(){
 
-const res=await fetch(`${BASE_URL}/issues/fine/${username}`);
-
+const res=await fetch(BASE_URL+"/issues/fine/"+username);
 const data=await res.json();
 
 document.getElementById("dues").innerText=data.fine;
 
 }
 
-/* SEARCH BOOKS */
+
+/* SEARCH */
 
 function searchBooks(){
 
 const text=document.getElementById("search").value.toLowerCase();
 
-const filtered=books.filter(b=>
-b.title.toLowerCase().includes(text)
-);
+const filtered=books.filter(function(b){
+return b.title.toLowerCase().includes(text);
+});
 
 displayBooks(filtered);
 
 }
 
+
 /* LOGOUT */
 
 function logout(){
-
 localStorage.clear();
-
-window.location.href="index.html";
-
+window.location="index.html";
 }
 
-/* PAGE LOAD */
+
+/* CHANGE PASSWORD */
+
+function changePassword(){
+alert("Change password feature coming soon");
+}
+
+
+/* START */
 
 loadBooks();
 loadIssuedBooks();
 loadFine();
 
 </script>
+
 </body>
 </html>
