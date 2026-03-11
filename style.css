@@ -226,6 +226,10 @@ display:flex;
 flex-direction:column;
 }
 
+.sidebar.active{
+left:0;
+}
+
 .sidebar button{
 width:100%;
 margin-top:10px;
@@ -240,6 +244,7 @@ cursor:pointer;
 .sidebar button:last-child{
 margin-top:auto;
 }
+
 #profileUsername{
 display:block;
 margin-bottom:12px;
