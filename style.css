@@ -151,11 +151,11 @@ padding:30px;
 
 .book-card{
 background:white;
-padding:18px;
-border-radius:12px;
-margin:15px auto;
-box-shadow:0 8px 15px rgba(0,0,0,0.08);
-max-width:420px;
+padding:12px;
+border-radius:10px;
+margin:10px 0;
+box-shadow:0 6px 12px rgba(0,0,0,0.08);
+width:260px;
 }
 
 .book-card button{
