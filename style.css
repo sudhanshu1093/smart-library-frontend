@@ -138,7 +138,7 @@ padding:15px 30px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-flex-wrap:wrap;
+height:70px;
 }
 
 /* CONTAINER */
@@ -290,4 +290,11 @@ align-items:flex-start;
 gap:10px;
 }
 
+}
+.profile-icon{
+width:40px;
+height:40px;
+object-fit:cover;
+border-radius:50%;
+cursor:pointer;
 }
