@@ -3,7 +3,6 @@
 <head>
 
 <title>Librarian Dashboard</title>
-
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -29,8 +28,6 @@ Logout
 
 <div class="container">
 
-<!-- LIBRARY STATS -->
-
 <h3>Library Stats</h3>
 
 <div class="stats">
@@ -54,24 +51,10 @@ Books Issued
 <h3>Add Book</h3>
 
 <input class="field" id="title" placeholder="Book Name">
-
 <input class="field" id="author" placeholder="Author">
-
 <input class="field" id="qty" type="number" placeholder="Quantity">
 
 <button class="login-btn" onclick="addBook()">Add Book</button>
-
-<br><br>
-
-<!-- ISSUE BOOK -->
-
-<h3>Issue Book</h3>
-
-<input class="field" id="studentId" placeholder="Student ID">
-
-<input class="field" id="bookTitle" placeholder="Book Name">
-
-<button class="login-btn" onclick="issueBook()">Issue Book</button>
 
 <br><br>
 
@@ -95,15 +78,14 @@ Books Issued
 
 const BASE_URL="https://smart-library-backend-3762.onrender.com";
 
-
-/* LOAD BOOKS */
+/* ================= LOAD BOOKS ================= */
 
 async function loadBooks(){
 
-const res=await fetch(`${BASE_URL}/books`);
-const data=await res.json();
+const res = await fetch(`${BASE_URL}/books`);
+const data = await res.json();
 
-const list=document.getElementById("bookList");
+const list = document.getElementById("bookList");
 
 list.innerHTML="";
 
@@ -111,9 +93,9 @@ let total=0;
 
 data.books.forEach(book=>{
 
-total+=book.quantity;
+total += book.quantity;
 
-list.innerHTML+=`
+list.innerHTML += `
 
 <div class="book-card">
 
@@ -123,22 +105,17 @@ list.innerHTML+=`
 
 <p>Available: ${book.quantity}</p>
 
-<button onclick="deleteBook('${book._id}')" class="login-btn">
-Delete
-</button>
-
 </div>
 
 `;
 
 });
 
-document.getElementById("totalBooks").innerText=total;
+document.getElementById("totalBooks").innerText = total;
 
 }
 
-
-/* LOAD ISSUED BOOKS */
+/* ================= LOAD ISSUED BOOKS ================= */
 
 async function loadIssued(){
 
@@ -149,19 +126,19 @@ const list = document.getElementById("issuedList");
 
 list.innerHTML="";
 
-document.getElementById("issuedCount").innerText=data.length;
+document.getElementById("issuedCount").innerText = data.issues.length;
 
-data.forEach(book=>{
+data.issues.forEach(issue=>{
 
-list.innerHTML+=`
+list.innerHTML += `
 
 <div class="book-card">
 
-<h4>${book.title}</h4>
+<h4>${issue.bookId.title}</h4>
 
-<p>Student ID: ${book.student}</p>
+<p>Student ID: ${issue.username}</p>
 
-<p>Issued Date: ${new Date(book.issueDate).toDateString()}</p>
+<p>Issued: ${new Date(issue.issueDate).toDateString()}</p>
 
 </div>
 
@@ -171,8 +148,7 @@ list.innerHTML+=`
 
 }
 
-
-/* ADD BOOK */
+/* ================= ADD BOOK ================= */
 
 async function addBook(){
 
@@ -206,54 +182,7 @@ loadBooks();
 
 }
 
-
-/* DELETE BOOK */
-
-async function deleteBook(id){
-
-await fetch(`${BASE_URL}/books/${id}`,{
-method:"DELETE"
-});
-
-loadBooks();
-
-}
-
-
-/* ISSUE BOOK */
-
-async function issueBook(){
-
-let student=document.getElementById("studentId").value;
-let title=document.getElementById("bookTitle").value;
-
-await fetch(`${BASE_URL}/issues`,{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-student,
-title
-})
-
-});
-
-alert("Book Issued");
-
-document.getElementById("studentId").value="";
-document.getElementById("bookTitle").value="";
-
-loadBooks();
-loadIssued();
-
-}
-
-
-/* LOGOUT */
+/* ================= LOGOUT ================= */
 
 function logout(){
 
@@ -262,8 +191,7 @@ window.location="index.html";
 
 }
 
-
-/* INITIAL LOAD */
+/* ================= INITIAL LOAD ================= */
 
 loadBooks();
 loadIssued();
