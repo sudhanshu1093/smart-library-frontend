@@ -33,7 +33,7 @@ THE WORLD IS <b>HERE</b>. WHERE ARE <b>YOU</b>?
 <option value="librarian">Librarian</option>
 </select>
 
-<input class="field" id="username" placeholder="Username">
+<input class="field" id="username" type="text" placeholder="System ID" maxlength="10" pattern="[0-9]{10}">
 
 <input class="field" id="password" type="password" placeholder="Password">
 
@@ -60,6 +60,13 @@ e.preventDefault();   // THIS STOPS PAGE FROM JUMPING
 let role = document.getElementById("role").value;
 let username = document.getElementById("username").value;
 let password = document.getElementById("password").value;
+
+/* 10 digit validation */
+
+if(!/^[0-9]{10}$/.test(username)){
+alert("System ID must be exactly 10 digits");
+return;
+}
 
 if(!role || !username || !password){
 alert("Please fill all fields");
