@@ -343,7 +343,7 @@ async function issueBook(bookId){
 
 const username=localStorage.getItem("username");
 
-await fetch(`${BASE_URL}/issues`,{
+await fetch(`${BASE_URL}/issues/issue`,{
 method:"POST",
 headers:{ "Content-Type":"application/json"},
 body:JSON.stringify({bookId,username})
@@ -373,7 +373,7 @@ let dues=0;
 
 data.issues.forEach(issue=>{
 
-if(issue.username===username){
+if(issue.username.toString() === username.toString()){
 
 const today=new Date();
 const due=new Date(issue.dueDate);
