@@ -54,65 +54,72 @@ THE WORLD IS <b>HERE</b>. WHERE ARE <b>YOU</b>?
 const BASE_URL = "https://smart-library-backend-3762.onrender.com";
 
 document.getElementById("loginForm").addEventListener("submit", async function(e){
+  e.preventDefault();   // Stops page from jumping
 
-e.preventDefault();   // THIS STOPS PAGE FROM JUMPING
+  let role = document.getElementById("role").value;
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
 
-let role = document.getElementById("role").value;
-let username = document.getElementById("username").value;
-let password = document.getElementById("password").value;
+  // Validation
+  if(!role){
+    alert("Please select a role!");
+    return;
+  }
 
-/* 10 digit validation */
+  if(!/^[0-9]{10}$/.test(username)){
+    alert("System ID must be exactly 10 digits");
+    return;
+  }
 
-if(!/^[0-9]{10}$/.test(username)){
-alert("System ID must be exactly 10 digits");
-return;
-}
+  if(!password){
+    alert("Please enter your password!");
+    return;
+  }
 
-if(!role || !username || !password){
-alert("Please fill all fields");
-return;
-}
+  try {
+    // Show a loading indication if Render is waking up (optional)
+    const res = await fetch(`${BASE_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        role,
+        username,
+        password
+      })
+    });
 
-const res = await fetch(`${BASE_URL}/login`,{
+    // Check if the response is valid JSON
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error("Server is waking up or starting from cold storage. Please try again in 30 seconds.");
+    }
 
-method:"POST",
+    const data = await res.json();
 
-headers:{
-"Content-Type":"application/json"
-},
+    if (res.ok && data.success) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", username);
+      localStorage.setItem("role", role);
 
-body:JSON.stringify({
-role,
-username,
-password
-})
+      if (role === "student") {
+        window.location.href = "student.html";
+      } else if (role === "librarian") {
+        window.location.href = "librarian.html";
+      }
+    } else {
+      // Safe fallback: uses data.message, data.error, or a default string instead of "undefined"
+      alert(data.message || data.error || "Login failed. Please check your credentials.");
+    }
 
-});
-
-const data = await res.json();
-
-if(data.success){
-
-localStorage.setItem("token",data.token);
-localStorage.setItem("username",username);
-
-if(role==="student"){
-window.location="student.html";
-}
-
-if(role==="librarian"){
-window.location="librarian.html";
-}
-
-}else{
-
-alert(data.message);
-
-}
+  } catch (error) {
+    console.error("Login error:", error);
+    alert(error.message || "Server error! Backend might be waking up from sleep. Please wait a moment and try again.");
+  }
 
 });
 
 </script>
-
 </body>
 </html>
